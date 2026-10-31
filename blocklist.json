@@ -1,0 +1,50 @@
+{
+  "packages": [
+    {
+      "name": "@modelcontextprotocol/server-postgres",
+      "reason": "archived 2025-05-28, no security guarantees; known read-only-bypass SQL injection flaw"
+    },
+    {
+      "name": "@modelcontextprotocol/server-sqlite",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-puppeteer",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-github",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-brave-search",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-slack",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-gitlab",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "@modelcontextprotocol/server-google-maps",
+      "reason": "archived 2025-05-28, no security guarantees"
+    },
+    {
+      "name": "postmark-mcp",
+      "reason": "v1.0.16 shipped a one-line BCC backdoor (supply-chain incident) — that version is blocked",
+      "versions": [
+        "1.0.16"
+      ]
+    }
+  ],
+  "url_patterns": [
+    {
+      "pattern": "server.smithery.ai",
+      "reason": "Smithery shuts down 2026-10-31 (acquired by Arcade.dev) — hosted endpoints will die; install the package directly instead"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,527 @@
+{
+  "entries": [
+    {
+      "category": "browser",
+      "config_template": {
+        "args": [
+          "-y",
+          "chrome-devtools-mcp@1.12.0"
+        ],
+        "command": "npx"
+      },
+      "description": "Browser debugging and performance: traces, Core Web Vitals, network and console inspection in Chrome.",
+      "featured": true,
+      "id": "chrome-devtools",
+      "key_badge": "keyless",
+      "license": "Apache-2.0",
+      "name": "Chrome DevTools MCP",
+      "publisher": "ChromeDevTools",
+      "required_secrets": [],
+      "risk_notes": [
+        "Chrome only — for cross-browser automation use Playwright MCP instead."
+      ],
+      "source_url": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "transport": "stdio",
+      "verified": true,
+      "version": "1.12.0"
+    },
+    {
+      "category": "browser",
+      "config_template": {
+        "args": [
+          "-y",
+          "@playwright/mcp@0.0.83"
+        ],
+        "command": "npx"
+      },
+      "description": "Cross-browser automation (Chromium, Firefox, WebKit) via accessibility snapshots — fast and token-cheap.",
+      "featured": true,
+      "id": "playwright",
+      "key_badge": "keyless",
+      "license": "Apache-2.0",
+      "name": "Playwright MCP",
+      "publisher": "Microsoft",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/microsoft/playwright-mcp",
+      "transport": "stdio",
+      "verified": true,
+      "version": "0.0.83"
+    },
+    {
+      "category": "docs",
+      "config_template": {
+        "transport": "http",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "description": "Live, version-specific library documentation — stops the model hallucinating APIs.",
+      "featured": true,
+      "id": "context7",
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Context7",
+      "publisher": "Upstash",
+      "required_secrets": [
+        {
+          "description": "Free key from context7.com — higher rate limits",
+          "in": "header",
+          "name": "CONTEXT7_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "The MCP client is MIT, but the documentation backend is closed-source."
+      ],
+      "source_url": "https://github.com/upstash/context7",
+      "transport": "http",
+      "verified": true,
+      "version": ""
+    },
+    {
+      "category": "code",
+      "config_template": {
+        "transport": "http",
+        "url": "https://api.githubcopilot.com/mcp/"
+      },
+      "description": "GitHub repos, issues and pull requests via GitHub's official hosted MCP server.",
+      "featured": true,
+      "id": "github",
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "GitHub MCP",
+      "publisher": "GitHub",
+      "required_secrets": [
+        {
+          "description": "GitHub personal access token (free) — value format: Bearer <token>",
+          "in": "header",
+          "name": "Authorization"
+        }
+      ],
+      "risk_notes": [
+        "Default toolset is ≈46 tools / ~11k tokens; do NOT enable all toolsets (91 tools / ~23k tokens) — keep the narrowed default."
+      ],
+      "source_url": "https://github.com/github/github-mcp-server",
+      "tool_count_estimate": 46,
+      "transport": "http",
+      "verified": true,
+      "version": ""
+    },
+    {
+      "category": "files",
+      "config_template": {
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem@2.0.1"
+        ],
+        "command": "npx"
+      },
+      "description": "Reference filesystem server: read and write files inside explicitly allowed directories only.",
+      "featured": true,
+      "id": "filesystem",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Filesystem",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [
+        "An allowed-directory argument is REQUIRED before use: append the directory path to the args in the review screen — the template ships no path on purpose, so nothing is exposed by default."
+      ],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem",
+      "transport": "stdio",
+      "verified": true,
+      "version": "2.0.1"
+    },
+    {
+      "category": "web",
+      "config_template": {
+        "args": [
+          "mcp-server-fetch@2026.10.24"
+        ],
+        "command": "uvx"
+      },
+      "description": "Reference fetch server: retrieves web pages and converts them to markdown for the model.",
+      "featured": true,
+      "id": "fetch",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Fetch",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/fetch",
+      "transport": "stdio",
+      "verified": true,
+      "version": "2026.10.24"
+    },
+    {
+      "category": "code",
+      "config_template": {
+        "args": [
+          "mcp-server-git@2026.10.19"
+        ],
+        "command": "uvx"
+      },
+      "description": "Reference git server: inspect and operate on local git repositories.",
+      "featured": true,
+      "id": "git",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Git",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [
+        "Point it at a repository with --repository <path> (or the repository argument of its tools) before use."
+      ],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/git",
+      "transport": "stdio",
+      "verified": true,
+      "version": "2026.10.19"
+    },
+    {
+      "category": "database",
+      "config_template": {
+        "args": [
+          "-y",
+          "@bytebase/dbhub@1.5.0"
+        ],
+        "command": "npx"
+      },
+      "description": "Universal database gateway: Postgres, MySQL, MariaDB, SQL Server, SQLite and Oracle in one server, with read-only guards.",
+      "featured": true,
+      "id": "dbhub",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "DBHub",
+      "publisher": "Bytebase",
+      "required_secrets": [],
+      "risk_notes": [
+        "With no --dsn it starts against a built-in --demo database; add --dsn <connection string> for a real database and prefer --readonly mode for agent use."
+      ],
+      "source_url": "https://github.com/bytebase/dbhub",
+      "transport": "stdio",
+      "verified": true,
+      "version": "1.5.0"
+    },
+    {
+      "category": "database",
+      "config_template": {
+        "args": [
+          "-y",
+          "@toolbox-sdk/server@1.15.0",
+          "--prebuilt=postgres",
+          "--stdio"
+        ],
+        "command": "npx"
+      },
+      "description": "Google's database toolbox: prebuilt and custom tools for enterprise databases (Postgres preset shown; many sources supported).",
+      "featured": true,
+      "id": "mcp-toolbox",
+      "key_badge": "keyless",
+      "license": "Apache-2.0",
+      "name": "MCP Toolbox for Databases",
+      "publisher": "Google",
+      "required_secrets": [],
+      "risk_notes": [
+        "Template verified from the project README (googleapis/mcp-toolbox): the npx @toolbox-sdk/server wrapper is the documented MCP install path; a standalone `toolbox` binary is also published on the project's GitHub releases. Set the database connection env vars for the chosen --prebuilt source before use, and expect APIs to keep evolving between releases."
+      ],
+      "source_url": "https://github.com/googleapis/mcp-toolbox",
+      "transport": "stdio",
+      "verified": true,
+      "version": "1.15.0"
+    },
+    {
+      "category": "search",
+      "config_template": {
+        "args": [
+          "-y",
+          "@brave/brave-search-mcp-server@2.1.4"
+        ],
+        "command": "npx"
+      },
+      "description": "Web and local search backed by Brave's independent index, plus an LLM Context tool.",
+      "featured": true,
+      "id": "brave-search",
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Brave Search",
+      "publisher": "Brave",
+      "required_secrets": [
+        {
+          "description": "Brave Search API key (free tier)",
+          "in": "env",
+          "name": "BRAVE_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "2,000 queries/mo free on the free plan."
+      ],
+      "source_url": "https://github.com/brave/brave-search-mcp-server",
+      "transport": "stdio",
+      "verified": true,
+      "version": "2.1.4"
+    },
+    {
+      "category": "search",
+      "config_template": {
+        "transport": "http",
+        "url": "https://mcp.tavily.com/mcp/"
+      },
+      "description": "Research-grade search and content extraction tuned for AI agents.",
+      "featured": true,
+      "id": "tavily",
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Tavily",
+      "publisher": "Tavily",
+      "required_secrets": [
+        {
+          "description": "Tavily API key (free, 1,000 credits/mo) — value format: Bearer <key>",
+          "in": "header",
+          "name": "Authorization"
+        }
+      ],
+      "risk_notes": [],
+      "source_url": "https://github.com/tavily-ai/tavily-mcp",
+      "transport": "http",
+      "verified": true,
+      "version": ""
+    },
+    {
+      "category": "web",
+      "config_template": {
+        "args": [
+          "-y",
+          "firecrawl-mcp@3.35.0"
+        ],
+        "command": "npx"
+      },
+      "description": "Web scraping and extraction: crawl sites and turn pages into clean markdown or structured data.",
+      "featured": true,
+      "id": "firecrawl",
+      "key_badge": "freemium",
+      "license": "MIT (server shim)",
+      "license_note": "Firecrawl CORE is AGPL-3.0 — the MCP shim is MIT, the service core is AGPL; self-hosting the core carries AGPL obligations.",
+      "name": "Firecrawl",
+      "publisher": "Firecrawl",
+      "required_secrets": [
+        {
+          "description": "Firecrawl API key (free tier)",
+          "in": "env",
+          "name": "FIRECRAWL_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "1,000 credits/mo free."
+      ],
+      "source_url": "https://github.com/firecrawl/firecrawl-mcp-server",
+      "transport": "stdio",
+      "verified": true,
+      "version": "3.35.0"
+    },
+    {
+      "category": "memory",
+      "config_template": {},
+      "description": "Reference knowledge-graph memory server (entities, relations, observations).",
+      "featured": false,
+      "id": "memory",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Memory",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
+      "transport": "stdio",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "reasoning",
+      "config_template": {},
+      "description": "Reference server for structured, step-by-step reflective problem solving.",
+      "featured": false,
+      "id": "sequential-thinking",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Sequential Thinking",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
+      "transport": "stdio",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "utilities",
+      "config_template": {},
+      "description": "Reference time and timezone conversion server.",
+      "featured": false,
+      "id": "time",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Time",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+      "transport": "stdio",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "utilities",
+      "config_template": {},
+      "description": "Reference test server exercising every MCP protocol feature — for client development.",
+      "featured": false,
+      "id": "everything",
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Everything",
+      "publisher": "Model Context Protocol",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
+      "transport": "stdio",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "observability",
+      "config_template": {},
+      "description": "Query Sentry issues, errors and performance data from your agent.",
+      "featured": false,
+      "id": "sentry",
+      "key_badge": "free_key",
+      "license": "Apache-2.0",
+      "name": "Sentry MCP",
+      "publisher": "Sentry",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/getsentry/sentry-mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Linear issues, projects and teams via Linear's hosted MCP server.",
+      "featured": false,
+      "id": "linear",
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Linear MCP",
+      "publisher": "Linear",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://linear.app/docs/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Search and edit Notion pages and databases via Notion's official MCP server.",
+      "featured": false,
+      "id": "notion",
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Notion MCP",
+      "publisher": "Notion",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/makenotion/notion-mcp-server",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "communication",
+      "config_template": {},
+      "description": "Slack channels, messages and search via Slack's official MCP server.",
+      "featured": false,
+      "id": "slack",
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Slack MCP",
+      "publisher": "Slack",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://docs.slack.dev/ai/slack-mcp-server/",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Jira and Confluence via Atlassian's hosted Rovo MCP server.",
+      "featured": false,
+      "id": "atlassian",
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Atlassian MCP",
+      "publisher": "Atlassian",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://support.atlassian.com/rovo/docs/atlassian-remote-mcp-server/",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "infrastructure",
+      "config_template": {},
+      "description": "Cloudflare Workers, storage and observability servers from Cloudflare.",
+      "featured": false,
+      "id": "cloudflare",
+      "key_badge": "free_key",
+      "license": "Apache-2.0",
+      "name": "Cloudflare MCP",
+      "publisher": "Cloudflare",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/cloudflare/mcp-server-cloudflare",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "database",
+      "config_template": {},
+      "description": "Manage Supabase projects, tables and SQL from your agent.",
+      "featured": false,
+      "id": "supabase",
+      "key_badge": "free_key",
+      "license": "Apache-2.0",
+      "name": "Supabase MCP",
+      "publisher": "Supabase",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/supabase-community/supabase-mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "payments",
+      "config_template": {},
+      "description": "Stripe customers, payments and billing via Stripe's hosted MCP server.",
+      "featured": false,
+      "id": "stripe",
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Stripe MCP",
+      "publisher": "Stripe",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://docs.stripe.com/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    }
+  ],
+  "registry_synced_at": "2026-10-27",
+  "version": 1
+}
