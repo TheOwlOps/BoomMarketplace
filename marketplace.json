@@ -323,6 +323,11 @@
       "description": "Reference knowledge-graph memory server (entities, relations, observations).",
       "featured": false,
       "id": "memory",
+      "install": {
+        "kind": "npm",
+        "package": "@modelcontextprotocol/server-memory",
+        "version": "2.0.1"
+      },
       "key_badge": "keyless",
       "license": "MIT",
       "name": "Memory",
@@ -332,7 +337,7 @@
       "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/memory",
       "transport": "stdio",
       "verified": false,
-      "version": ""
+      "version": "2.0.1"
     },
     {
       "category": "reasoning",
@@ -340,6 +345,11 @@
       "description": "Reference server for structured, step-by-step reflective problem solving.",
       "featured": false,
       "id": "sequential-thinking",
+      "install": {
+        "kind": "npm",
+        "package": "@modelcontextprotocol/server-sequential-thinking",
+        "version": "2.0.0"
+      },
       "key_badge": "keyless",
       "license": "MIT",
       "name": "Sequential Thinking",
@@ -349,7 +359,7 @@
       "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking",
       "transport": "stdio",
       "verified": false,
-      "version": ""
+      "version": "2.0.0"
     },
     {
       "category": "utilities",
@@ -357,6 +367,11 @@
       "description": "Reference time and timezone conversion server.",
       "featured": false,
       "id": "time",
+      "install": {
+        "kind": "pypi",
+        "package": "mcp-server-time",
+        "version": "2026.10.28"
+      },
       "key_badge": "keyless",
       "license": "MIT",
       "name": "Time",
@@ -366,7 +381,7 @@
       "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
       "transport": "stdio",
       "verified": false,
-      "version": ""
+      "version": "2026.10.28"
     },
     {
       "category": "utilities",
@@ -374,6 +389,11 @@
       "description": "Reference test server exercising every MCP protocol feature — for client development.",
       "featured": false,
       "id": "everything",
+      "install": {
+        "kind": "npm",
+        "package": "@modelcontextprotocol/server-everything",
+        "version": "2.1.0"
+      },
       "key_badge": "keyless",
       "license": "MIT",
       "name": "Everything",
@@ -383,7 +403,7 @@
       "source_url": "https://github.com/modelcontextprotocol/servers/tree/main/src/everything",
       "transport": "stdio",
       "verified": false,
-      "version": ""
+      "version": "2.1.0"
     },
     {
       "category": "observability",
@@ -391,6 +411,10 @@
       "description": "Query Sentry issues, errors and performance data from your agent.",
       "featured": false,
       "id": "sentry",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.sentry.dev/mcp"
+      },
       "key_badge": "free_key",
       "license": "Apache-2.0",
       "name": "Sentry MCP",
@@ -408,6 +432,10 @@
       "description": "Linear issues, projects and teams via Linear's hosted MCP server.",
       "featured": false,
       "id": "linear",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.linear.app/mcp"
+      },
       "key_badge": "free_key",
       "license": "",
       "name": "Linear MCP",
@@ -425,6 +453,10 @@
       "description": "Search and edit Notion pages and databases via Notion's official MCP server.",
       "featured": false,
       "id": "notion",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.notion.com/mcp"
+      },
       "key_badge": "free_key",
       "license": "MIT",
       "name": "Notion MCP",
@@ -442,6 +474,10 @@
       "description": "Slack channels, messages and search via Slack's official MCP server.",
       "featured": false,
       "id": "slack",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.slack.com/mcp"
+      },
       "key_badge": "free_key",
       "license": "",
       "name": "Slack MCP",
@@ -459,6 +495,10 @@
       "description": "Jira and Confluence via Atlassian's hosted Rovo MCP server.",
       "featured": false,
       "id": "atlassian",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.atlassian.com/v2/mcp"
+      },
       "key_badge": "free_key",
       "license": "",
       "name": "Atlassian MCP",
@@ -493,6 +533,10 @@
       "description": "Manage Supabase projects, tables and SQL from your agent.",
       "featured": false,
       "id": "supabase",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.supabase.com/mcp"
+      },
       "key_badge": "free_key",
       "license": "Apache-2.0",
       "name": "Supabase MCP",
@@ -510,6 +554,10 @@
       "description": "Stripe customers, payments and billing via Stripe's hosted MCP server.",
       "featured": false,
       "id": "stripe",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.stripe.com"
+      },
       "key_badge": "free_key",
       "license": "",
       "name": "Stripe MCP",
