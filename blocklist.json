@@ -38,6 +38,14 @@
       "versions": [
         "1.0.16"
       ]
+    },
+    {
+      "name": "ai-crypto-sniper-mcp",
+      "reason": "maintainer removal 2026-11-01: server is non-functional standalone per its own PyPI page (requires a separate paid companion Windows app, undisclosed in the listing)"
+    },
+    {
+      "name": "solana-snipe-bot-mcp",
+      "reason": "renamed twin of ai-crypto-sniper-mcp — maintainer removal 2026-11-01: server is non-functional standalone per its own PyPI page (requires a separate paid companion Windows app, undisclosed in the listing)"
     }
   ],
   "url_patterns": [

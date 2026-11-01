@@ -742,28 +742,6 @@
       "version": ""
     },
     {
-      "category": "payments",
-      "config_template": {},
-      "description": "AI-assisted Solana trading bot with 331 MCP tools across Meme, Spot, Perpetuals, and Mirror modes.",
-      "featured": false,
-      "id": "ai-crypto-sniper-mcp",
-      "install": {
-        "kind": "pypi",
-        "package": "ai-crypto-sniper-mcp",
-        "version": "5.0.0"
-      },
-      "key_badge": "keyless",
-      "license": "",
-      "name": "AI Crypto Sniper MCP",
-      "publisher": "Aicryptosniper",
-      "required_secrets": [],
-      "risk_notes": [],
-      "source_url": "https://github.com/solara-sniper-bot/AI-Crypto-Sniper-MCP",
-      "transport": "stdio",
-      "verified": false,
-      "version": "5.0.0"
-    },
-    {
       "category": "docs",
       "config_template": {},
       "description": "Author rules from policy docs, then decide: a Rete engine gives the verdict, an LLM explains why.",
@@ -4690,28 +4668,6 @@
       "transport": "stdio",
       "verified": false,
       "version": "1.0.0"
-    },
-    {
-      "category": "payments",
-      "config_template": {},
-      "description": "Renamed to AI Crypto Sniper. Use com.aicryptosniper/ai-crypto-sniper-mcp instead.",
-      "featured": false,
-      "id": "solana-snipe-bot-mcp",
-      "install": {
-        "kind": "pypi",
-        "package": "solana-snipe-bot-mcp",
-        "version": "5.0.1"
-      },
-      "key_badge": "keyless",
-      "license": "",
-      "name": "AI Crypto Sniper MCP (renamed)",
-      "publisher": "Solsniperbot",
-      "required_secrets": [],
-      "risk_notes": [],
-      "source_url": "https://github.com/solara-sniper-bot/AI-Crypto-Sniper-MCP",
-      "transport": "stdio",
-      "verified": false,
-      "version": "5.0.1"
     },
     {
       "category": "reasoning",
