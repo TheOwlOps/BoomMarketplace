@@ -10,6 +10,7 @@ This repository contains **no code**. It is the first-party marketplace source t
 | --- | --- | --- |
 | `marketplace.json` | **Listings** | The catalog entries (`version`, `registry_synced_at`, `entries[]`). |
 | `blocklist.json` | **Safety data** | Package rules and URL/host patterns that must never be listed or installed. Has its own update path, independent of the listings. |
+| `skills.json` | **Skill listings** | Skill entries (`name`, `publisher`, `description`, `license`, `category`, `source` git URL, `kind`: `skill` or `pack`). Installing one runs Boom's existing skill pipeline: clone → security scan → staged human approval → install. |
 
 Structural note: in Boom's current embedded catalog (`plugins/boom-mcp/catalog.json` in the Boom repo) the blocklist lives inside the same file as the listings. In this repository it is **split out into `blocklist.json`** so safety data can move faster than listings. `marketplace.json` therefore deliberately does **not** carry a copy of the blocklist — there is exactly one blocklist in this repo, and it is `blocklist.json`. Until the Boom app finishes migrating to this repo as its source, the app also keeps its own embedded catalog (including its embedded blocklist copy) as an offline fallback; maintainers keep that embedded copy and this repo in sync during the transition. Longer term, `blocklist.json` is the intended home for signed, out-of-band safety updates.
 
