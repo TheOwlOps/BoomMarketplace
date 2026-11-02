@@ -57,23 +57,47 @@
       "description": "Live, version-specific library documentation — stops the model hallucinating APIs.",
       "featured": true,
       "id": "context7",
-      "key_badge": "free_key",
+      "key_badge": "keyless",
       "license": "MIT",
       "name": "Context7",
       "publisher": "Upstash",
       "required_secrets": [
         {
-          "description": "Free key from context7.com — higher rate limits",
+          "description": "Optional free key from context7.com — higher rate limits; the server works without one",
           "in": "header",
           "name": "CONTEXT7_API_KEY"
         }
       ],
       "risk_notes": [
-        "The MCP client is MIT, but the documentation backend is closed-source."
+        "The MCP client is MIT, but the documentation backend is closed-source.",
+        "Verified keyless 2026-11-02: initialize, tools/list and a resolve-library-id call all succeeded with no API key."
       ],
       "source_url": "https://github.com/upstash/context7",
       "transport": "http",
       "verified": true,
+      "version": ""
+    },
+    {
+      "category": "docs",
+      "config_template": {},
+      "description": "AI-generated documentation wikis for public GitHub repositories — structure, contents and Q&A, no account or key needed for public repos.",
+      "featured": false,
+      "id": "deepwiki",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.deepwiki.com/mcp"
+      },
+      "key_badge": "keyless",
+      "license": "",
+      "name": "DeepWiki MCP",
+      "publisher": "Cognition",
+      "required_secrets": [],
+      "risk_notes": [
+        "Public repositories only in keyless mode; private-mode tools require a Devin account."
+      ],
+      "source_url": "https://deepwiki.com",
+      "transport": "http",
+      "verified": false,
       "version": ""
     },
     {
