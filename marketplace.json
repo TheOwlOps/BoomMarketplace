@@ -104,7 +104,7 @@
       "category": "code",
       "config_template": {
         "transport": "http",
-        "url": "https://api.githubcopilot.com/mcp/"
+        "url": "https://api.githubcopilot.com/mcp/x/all"
       },
       "description": "GitHub repos, issues and pull requests via GitHub's official hosted MCP server.",
       "featured": true,
@@ -121,10 +121,10 @@
         }
       ],
       "risk_notes": [
-        "Default toolset is ≈46 tools / ~11k tokens; do NOT enable all toolsets (91 tools / ~23k tokens) — keep the narrowed default."
+        "All toolsets enabled (91 tools measured on github-mcp-server v2.1.0, incl. Actions, code security, discussions, gists and notifications). With Boom's ToolDeck the extra 45 tools cost ~1.2k tokens of index lines per turn; full schemas load only when a tool is searched for. The narrowed default toolset (46 tools) is one edit away: change the URL path back to /mcp/."
       ],
       "source_url": "https://github.com/github/github-mcp-server",
-      "tool_count_estimate": 46,
+      "tool_count_estimate": 91,
       "transport": "http",
       "verified": true,
       "version": ""
