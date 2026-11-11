@@ -1305,6 +1305,33 @@
       "version": ""
     },
     {
+      "category": "utilities",
+      "config_template": {},
+      "description": "Control Blender 3D from your agent: inspect the scene, build and edit 3D models by running Blender Python, check the result with multi-angle looks and renders, search and import assets (Poly Haven, Poly Pizza, Sketchfab), and generate 3D models (Meshy, Tripo, Hyper3D Rodin, Hunyuan3D). SETUP: the tools drive Blender through its free addon - install it with `uvx mcp-for-blender install-addon`, then in Blender (3.0+) open Edit > Preferences > Add-ons and enable 'Interface: MCP for Blender'. Blender must be open with the addon's server started (3D Viewport, N panel, 'MCP for Blender' tab) or every call returns a connection error.",
+      "featured": false,
+      "id": "blender",
+      "install": {
+        "kind": "pypi",
+        "package": "mcp-for-blender",
+        "version": "2.2.7"
+      },
+      "key_badge": "keyless",
+      "license": "MIT",
+      "name": "Blender MCP",
+      "publisher": "ahujasid",
+      "required_secrets": [],
+      "risk_notes": [
+        "Requires Blender 3.0+ running with the 'MCP for Blender' addon enabled and its socket server started (localhost:9876 by default). This MCP server starts fine without Blender, but tool calls then fail with 'Could not connect to Blender' - it never falls back to anything else.",
+        "The execute_blender_code tool runs arbitrary Python inside Blender with your user's full privileges: it can change or delete scene content and read or write files on disk. Review code calls before approving them.",
+        "The server collects anonymous telemetry by default; turn it off with its disable_telemetry tool or by setting the DISABLE_TELEMETRY env var. AI model generation (Meshy, Tripo, Hyper3D, Hunyuan3D) and Sketchfab import go through third-party services that may require their own accounts."
+      ],
+      "source_url": "https://github.com/ahujasid/mcp-for-blender",
+      "tool_count_estimate": 9,
+      "transport": "stdio",
+      "verified": false,
+      "version": "2.2.7"
+    },
+    {
       "category": "community",
       "config_template": {},
       "description": "Turn one sentence into finished ads: video ads, UGC, product photos, voiceover, brand kits, A/B.",
