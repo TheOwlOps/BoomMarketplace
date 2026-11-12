@@ -53,5 +53,6 @@
       "pattern": "server.smithery.ai",
       "reason": "Smithery shuts down 2026-10-31 (acquired by Arcade.dev) — hosted endpoints will die; install the package directly instead"
     }
-  ]
+  ],
+  "bots": []
 }
