@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "bots": [
+    {
+      "key": "gh-ryanowlops/scout",
+      "name": "Scout",
+      "author": {
+        "handle": "ryanowlops",
+        "name": "Son"
+      },
+      "description": "Theo dõi trang giá của đối thủ mỗi ngày và báo cáo thay đổi một cách chính xác và chi tiết.",
+      "category": "Research",
+      "version": "1.0.0",
+      "license": "MIT",
+      "price": {
+        "amount": 0,
+        "currency": "USD"
+      },
+      "package": "packages/ryanowlops/scout.json",
+      "sha256": "dcb36cb6d92538263144536ddd70e3d00d734941a93d5c8da9effc53bfdebbe9",
+      "featured": false
+    }
+  ]
+}
