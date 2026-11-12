@@ -54,10 +54,5 @@
       "reason": "Smithery shuts down 2026-10-31 (acquired by Arcade.dev) — hosted endpoints will die; install the package directly instead"
     }
   ],
-  "bots": [
-    {
-      "key": "gh-ryanowlops/scout",
-      "reason": "W6 withdrawal drill — temporary entry, reverted immediately after the drill."
-    }
-  ]
+  "bots": []
 }
