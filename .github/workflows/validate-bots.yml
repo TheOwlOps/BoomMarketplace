@@ -1,0 +1,79 @@
+# validate-bots — the CI gate for community bot packages (DESIGN §7.3).
+#
+# Why pull_request_target + API snapshots:
+#   A submission PR comes from a fork. A plain `pull_request` workflow
+#   gets a read-only token and cannot annotate fork PRs usefully; a
+#   `pull_request` workflow that checks out the PR would run with the
+#   PR's own workflow files. So this workflow runs from the BASE
+#   branch (trusted code: scripts/validate-bots.mjs as merged on main),
+#   and fetches the PR's DATA files (bots.json + packages/**) through
+#   the GitHub API into plain snapshot directories. PR content is
+#   never checked out and never executed — the validator only reads
+#   JSON. Findings land as check annotations + the job summary.
+name: validate-bots
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: validate-bots-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      # Base-branch checkout (pull_request_target semantics): this is
+      # the repository's own code, including the validator — never the
+      # PR's tree.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch PR snapshots via the API (data only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          repo="${GITHUB_REPOSITORY}"
+
+          gh api "repos/${repo}/pulls/${PR_NUMBER}/files" --paginate \
+            --jq '.[].filename' > changed.txt
+
+          fetch_snapshot() {
+            local sha="$1" dest="$2"
+            mkdir -p "${dest}/packages"
+            gh api "repos/${repo}/git/trees/${sha}?recursive=1" \
+              --jq '.tree[] | select(.type == "blob") | .path' \
+              | grep -E '^(bots\.json|packages/[^/]+/[^/]+\.json)$' \
+              | while IFS= read -r path; do
+                  mkdir -p "${dest}/$(dirname "${path}")"
+                  gh api "repos/${repo}/contents/${path}?ref=${sha}" \
+                    --jq '.content' | base64 --decode > "${dest}/${path}"
+                done
+          }
+
+          fetch_snapshot "${HEAD_SHA}" head-snapshot
+          fetch_snapshot "${BASE_SHA}" base-snapshot
+
+      - name: Run the gate
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          node scripts/validate-bots.mjs \
+            --root head-snapshot \
+            --base-root base-snapshot \
+            --author "${PR_AUTHOR}" \
+            --files changed.txt
