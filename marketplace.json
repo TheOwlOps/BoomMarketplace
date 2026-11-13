@@ -239,13 +239,29 @@
       "description": "Google's database toolbox: prebuilt and custom tools for enterprise databases (Postgres preset shown; many sources supported).",
       "featured": true,
       "id": "mcp-toolbox",
-      "key_badge": "keyless",
+      "key_badge": "free_key",
       "license": "Apache-2.0",
       "name": "MCP Toolbox for Databases",
       "publisher": "Google",
-      "required_secrets": [],
+      "required_secrets": [
+        {
+          "description": "Database name for the prebuilt Postgres preset (required — the server exits at startup without it)",
+          "in": "env",
+          "name": "POSTGRES_DATABASE"
+        },
+        {
+          "description": "Database user for the prebuilt Postgres preset (required — the server exits at startup without it)",
+          "in": "env",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "description": "Database password for the prebuilt Postgres preset (required — the server exits at startup without it)",
+          "in": "env",
+          "name": "POSTGRES_PASSWORD"
+        }
+      ],
       "risk_notes": [
-        "Template verified from the project README (googleapis/mcp-toolbox): the npx @toolbox-sdk/server wrapper is the documented MCP install path; a standalone `toolbox` binary is also published on the project's GitHub releases. Set the database connection env vars for the chosen --prebuilt source before use, and expect APIs to keep evolving between releases."
+        "Template verified from the project README (googleapis/mcp-toolbox): the npx @toolbox-sdk/server wrapper is the documented MCP install path; a standalone `toolbox` binary is also published on the project's GitHub releases. The --prebuilt=postgres preset reads its connection from env: POSTGRES_HOST / POSTGRES_PORT (default localhost:5432) plus the required POSTGRES_DATABASE, POSTGRES_USER and POSTGRES_PASSWORD — the server exits at startup naming whichever are missing (measured 2026-11-14). Expect APIs to keep evolving between releases."
       ],
       "source_url": "https://github.com/googleapis/mcp-toolbox",
       "transport": "stdio",
@@ -1583,7 +1599,13 @@
       "license": "",
       "name": "Catastro GPS",
       "publisher": "Parcelgps",
-      "required_secrets": [],
+      "required_secrets": [
+        {
+          "name": "CATASTROGPS_API_KEY",
+          "in": "env",
+          "description": "Catastro GPS API key (free tier at parcelgps.com/developers) — the server exits at startup without it: 'CATASTROGPS_API_KEY environment variable is required' (measured 2026-11-14)"
+        }
+      ],
       "risk_notes": [],
       "source_url": "https://github.com/TheHiddenPandaDev/catastro_gps_mcp",
       "transport": "stdio",
@@ -5135,6 +5157,789 @@
       "transport": "stdio",
       "verified": false,
       "version": "0.2.1"
+    },
+    {
+      "category": "infrastructure",
+      "config_template": {},
+      "description": "Kubernetes and OpenShift operations: inspect and manage pods, deployments, services, resources and logs in your cluster.",
+      "featured": false,
+      "id": "kubernetes",
+      "install": {
+        "kind": "npm",
+        "package": "kubernetes-mcp-server",
+        "version": "0.1.2"
+      },
+      "key_badge": "keyless",
+      "license": "Apache-2.0",
+      "name": "Kubernetes MCP",
+      "publisher": "containers org",
+      "required_secrets": [],
+      "risk_notes": [
+        "Acts on the cluster from your kubeconfig with your credentials — it can create, modify and delete cluster resources. Review calls before approving them."
+      ],
+      "source_url": "https://github.com/containers/kubernetes-mcp-server",
+      "transport": "stdio",
+      "verified": false,
+      "version": "0.1.2"
+    },
+    {
+      "category": "database",
+      "config_template": {},
+      "description": "MongoDB databases, collections, queries and Atlas administration via MongoDB's official MCP server.",
+      "featured": false,
+      "id": "mongodb",
+      "install": {
+        "kind": "npm",
+        "package": "mongodb-mcp-server",
+        "version": "3.3.0"
+      },
+      "key_badge": "free_key",
+      "license": "Apache-2.0",
+      "name": "MongoDB MCP",
+      "publisher": "MongoDB",
+      "required_secrets": [
+        {
+          "description": "MongoDB connection string the server should use",
+          "in": "env",
+          "name": "MDB_MCP_CONNECTION_STRING"
+        }
+      ],
+      "risk_notes": [
+        "Can read and modify data in the connected database — use a least-privilege database user."
+      ],
+      "source_url": "https://github.com/mongodb-js/mongodb-mcp-server",
+      "transport": "stdio",
+      "verified": false,
+      "version": "3.3.0"
+    },
+    {
+      "category": "code",
+      "config_template": {},
+      "description": "Search and use Hugging Face Hub models, datasets and Spaces, plus thousands of Gradio AI apps, from your agent.",
+      "featured": false,
+      "id": "huggingface",
+      "install": {
+        "kind": "remote",
+        "url": "https://huggingface.co/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Hugging Face MCP",
+      "publisher": "Hugging Face",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://huggingface.co/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "search",
+      "config_template": {},
+      "description": "Optional keyed alternative: fast, intelligent web search and crawling tuned for AI agents, from Exa. Boom's built-in web_search already searches the web with NO API key.",
+      "featured": false,
+      "id": "exa",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.exa.ai/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Exa MCP",
+      "publisher": "Exa",
+      "required_secrets": [
+        {
+          "description": "Exa API key (sent as the x-api-key header)",
+          "in": "header",
+          "name": "x-api-key"
+        }
+      ],
+      "risk_notes": [],
+      "source_url": "https://github.com/exa-labs/exa-mcp-server",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Figma design context — files, components, variables and layout — directly in your agent workflow, via Figma's hosted server.",
+      "featured": false,
+      "id": "figma",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.figma.com/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Figma MCP",
+      "publisher": "Figma",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/figma/mcp-server-guide",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "web",
+      "config_template": {},
+      "description": "Optional keyed alternative: YouTube videos, channels and playlists via the YouTube Data API: search videos and channels, video and channel details, a channel's uploads, playlist items, and captions/transcripts. Boom's built-in youtube_* tools (youtube_search, youtube_video, youtube_transcript, youtube_channel, youtube_playlist, youtube_comments) cover this with NO API key.",
+      "featured": false,
+      "id": "youtube",
+      "install": {
+        "kind": "npm",
+        "package": "zubeid-youtube-mcp-server",
+        "version": "1.0.2"
+      },
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "YouTube MCP",
+      "publisher": "Zubeid Hendricks",
+      "required_secrets": [
+        {
+          "description": "YouTube Data API v3 key (free, from your own Google Cloud project) - the server refuses to start without it",
+          "in": "env",
+          "name": "YOUTUBE_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "Calls consume your YouTube Data API quota (a free key includes 10,000 units/day)."
+      ],
+      "source_url": "https://github.com/ZubeidHendricks/youtube-mcp-server",
+      "tool_count_estimate": 10,
+      "transport": "stdio",
+      "verified": false,
+      "version": "1.0.2"
+    },
+    {
+      "category": "web",
+      "config_template": {},
+      "description": "Optional keyed alternative: YouTube comments (including reply threads) and transcripts via the YouTube Data API. Boom's built-in youtube_comments and youtube_transcript tools cover top-level comments and transcripts with NO API key; this server remains the fuller route for deep reply-thread mining.",
+      "featured": false,
+      "id": "youtube-data",
+      "install": {
+        "kind": "npm",
+        "package": "youtube-data-mcp",
+        "version": "2.0.0"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "YouTube Data & Comments MCP",
+      "publisher": "Community (npm)",
+      "required_secrets": [
+        {
+          "description": "YouTube Data API v3 key (free, from your own Google Cloud project) - required for the comments and video-info tools",
+          "in": "env",
+          "name": "YOUTUBE_API_KEY"
+        },
+        {
+          "description": "SerpAPI key - the server's search tool runs through SerpAPI and answers 'SERPAPI_KEY is not set' without it (measured 2026-11-14)",
+          "in": "env",
+          "name": "SERPAPI_KEY"
+        }
+      ],
+      "risk_notes": [
+        "The server starts without keys, but its tools fail until their keys are set: search runs through SerpAPI (needs SERPAPI_KEY), the Data-API tools (comments, video info) need YOUTUBE_API_KEY (measured 2026-11-14). Complements the YouTube MCP entry, which has no comment tools."
+      ],
+      "source_url": "https://www.npmjs.com/package/youtube-data-mcp",
+      "tool_count_estimate": 5,
+      "transport": "stdio",
+      "verified": false,
+      "version": "2.0.0"
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Google Calendar through your own Google account: list calendars, list and search events, and create, update, delete and respond to events, with free/busy lookup.",
+      "featured": false,
+      "id": "google-calendar",
+      "install": {
+        "kind": "npm",
+        "package": "@cocal/google-calendar-mcp",
+        "version": "2.8.1"
+      },
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Google Calendar MCP",
+      "publisher": "nspady",
+      "required_secrets": [
+        {
+          "description": "Path to YOUR OWN Google OAuth client keys file (gcp-oauth.keys.json, Desktop app type, from Google Cloud Console). Sign-in is a one-time browser consent as yourself; no credential is shared with Boom.",
+          "in": "env",
+          "name": "GOOGLE_OAUTH_CREDENTIALS"
+        }
+      ],
+      "risk_notes": [
+        "Needs your own Google Cloud OAuth client (free). Boom's built-in Google connector is separate - this entry is the MCP route the owner asked for.",
+        "The server exits at startup if the credentials file is missing or malformed, and it can create, edit and delete events on every calendar your Google account can write - review calls before approving them."
+      ],
+      "source_url": "https://github.com/nspady/google-calendar-mcp",
+      "tool_count_estimate": 13,
+      "transport": "stdio",
+      "verified": false,
+      "version": "2.8.1"
+    },
+    {
+      "category": "code",
+      "config_template": {},
+      "description": "GitLab projects, issues, merge requests and CI pipelines via GitLab's official hosted MCP server.",
+      "featured": false,
+      "id": "gitlab",
+      "install": {
+        "kind": "remote",
+        "url": "https://gitlab.com/api/v4/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "GitLab MCP",
+      "publisher": "GitLab",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://gitlab.com/gitlab-org/gitlab",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Asana tasks, projects and workspaces via Asana's official hosted MCP server.",
+      "featured": false,
+      "id": "asana",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.asana.com/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Asana MCP",
+      "publisher": "Asana",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developers.asana.com/docs/mcp-server",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "HubSpot CRM contacts, companies, deals and tickets via HubSpot's official hosted MCP server.",
+      "featured": false,
+      "id": "hubspot",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.hubspot.com"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "HubSpot MCP",
+      "publisher": "HubSpot",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developers.hubspot.com/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "files",
+      "config_template": {},
+      "description": "Search, read and manage files in Box via Box's official hosted MCP server.",
+      "featured": false,
+      "id": "box",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.box.com"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Box MCP",
+      "publisher": "Box",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developer.box.com/guides/box-mcp/",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "database",
+      "config_template": {},
+      "description": "Neon serverless Postgres: projects, branches, databases and SQL via Neon's official hosted MCP server.",
+      "featured": false,
+      "id": "neon",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.neon.tech/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Neon MCP",
+      "publisher": "Neon",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate.",
+        "Can run SQL and manage databases in the connected Neon account — review calls before approving them."
+      ],
+      "source_url": "https://neon.com/docs/ai/neon-mcp-server",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "infrastructure",
+      "config_template": {},
+      "description": "Vercel projects, deployments and logs via Vercel's official hosted MCP server.",
+      "featured": false,
+      "id": "vercel",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.vercel.com"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Vercel MCP",
+      "publisher": "Vercel",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://vercel.com/docs/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "communication",
+      "config_template": {},
+      "description": "Intercom conversations, contacts and help-center content via Intercom's official hosted MCP server.",
+      "featured": false,
+      "id": "intercom",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.intercom.com/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Intercom MCP",
+      "publisher": "Intercom",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developers.intercom.com/docs/guides/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Todoist tasks, projects and labels via Doist's official hosted MCP server.",
+      "featured": false,
+      "id": "todoist",
+      "install": {
+        "kind": "remote",
+        "url": "https://ai.todoist.net/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Todoist MCP",
+      "publisher": "Doist",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developer.todoist.com",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Sanity content: query and manage documents and datasets via Sanity's official hosted MCP server.",
+      "featured": false,
+      "id": "sanity",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.sanity.io/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Sanity MCP",
+      "publisher": "Sanity",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://www.sanity.io/docs/mcp",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "web",
+      "config_template": {},
+      "description": "Webflow sites, pages and CMS collections via Webflow's official hosted MCP server.",
+      "featured": false,
+      "id": "webflow",
+      "install": {
+        "kind": "remote",
+        "url": "https://mcp.webflow.com/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Webflow MCP",
+      "publisher": "Webflow",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://github.com/webflow/mcp-server",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "docs",
+      "config_template": {},
+      "description": "Search Cloudflare's developer documentation via Cloudflare's official hosted MCP server. No account needed.",
+      "featured": false,
+      "id": "cloudflare-docs",
+      "install": {
+        "kind": "remote",
+        "url": "https://docs.mcp.cloudflare.com/mcp"
+      },
+      "key_badge": "keyless",
+      "license": "",
+      "name": "Cloudflare Docs MCP",
+      "publisher": "Cloudflare",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://developers.cloudflare.com/agents/model-context-protocol/",
+      "tool_count_estimate": 2,
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "infrastructure",
+      "config_template": {},
+      "description": "Manage Cloudflare Workers bindings (KV, D1, R2, Workers) via Cloudflare's official hosted MCP server.",
+      "featured": false,
+      "id": "cloudflare-bindings",
+      "install": {
+        "kind": "remote",
+        "url": "https://bindings.mcp.cloudflare.com/mcp"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "Cloudflare Bindings MCP",
+      "publisher": "Cloudflare",
+      "required_secrets": [],
+      "risk_notes": [
+        "Connects with your account sign-in (OAuth or a token header); the endpoint answers 401 until you authenticate."
+      ],
+      "source_url": "https://developers.cloudflare.com/agents/model-context-protocol/",
+      "transport": "http",
+      "verified": false,
+      "version": ""
+    },
+    {
+      "category": "docs",
+      "config_template": {},
+      "description": "Read Wikipedia from your agent: search articles and fetch full text, summaries, sections, links and coordinates. No API key needed.",
+      "featured": false,
+      "id": "wikipedia",
+      "install": {
+        "kind": "pypi",
+        "package": "wikipedia-mcp",
+        "version": "2.0.1"
+      },
+      "key_badge": "keyless",
+      "license": "",
+      "name": "Wikipedia MCP",
+      "publisher": "Rudra Ravi",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/rudra-ravi/wikipedia-mcp",
+      "tool_count_estimate": 22,
+      "transport": "stdio",
+      "verified": false,
+      "version": "2.0.1"
+    },
+    {
+      "category": "docs",
+      "config_template": {},
+      "description": "Search and read arXiv papers: search, abstracts, full-text reading, LaTeX source, citation graphs and watchlists. No API key needed.",
+      "featured": false,
+      "id": "arxiv",
+      "install": {
+        "kind": "pypi",
+        "package": "arxiv-mcp-server",
+        "version": "0.8.2"
+      },
+      "key_badge": "keyless",
+      "license": "",
+      "name": "arXiv MCP",
+      "publisher": "blazickjp",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://github.com/blazickjp/arxiv-mcp-server",
+      "tool_count_estimate": 19,
+      "transport": "stdio",
+      "verified": false,
+      "version": "0.8.2"
+    },
+    {
+      "category": "code",
+      "config_template": {},
+      "description": "Shopify development help: search the Shopify docs, learn Liquid and GraphQL APIs and validate themes and functions. No account needed.",
+      "featured": false,
+      "id": "shopify-dev",
+      "install": {
+        "kind": "npm",
+        "package": "@shopify/dev-mcp",
+        "version": "1.18.0"
+      },
+      "key_badge": "keyless",
+      "license": "ISC",
+      "name": "Shopify Dev MCP",
+      "publisher": "Shopify",
+      "required_secrets": [],
+      "risk_notes": [],
+      "source_url": "https://shopify.dev/docs/apps/build/devmcp",
+      "tool_count_estimate": 5,
+      "transport": "stdio",
+      "verified": false,
+      "version": "1.18.0"
+    },
+    {
+      "category": "search",
+      "config_template": {},
+      "description": "Perplexity AI search, ask, reasoning and deep research through your own Perplexity API key.",
+      "featured": false,
+      "id": "perplexity",
+      "install": {
+        "kind": "npm",
+        "package": "@perplexity-ai/mcp-server",
+        "version": "1.3.0"
+      },
+      "key_badge": "paid",
+      "license": "MIT",
+      "name": "Perplexity MCP",
+      "publisher": "Perplexity",
+      "required_secrets": [
+        {
+          "description": "Perplexity API key - every call is billed against your Perplexity API balance",
+          "in": "env",
+          "name": "PERPLEXITY_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "Each call consumes paid Perplexity API credits; the deep-research tool is the most expensive."
+      ],
+      "source_url": "https://docs.perplexity.ai/guides/mcp-server",
+      "tool_count_estimate": 4,
+      "transport": "stdio",
+      "verified": false,
+      "version": "1.3.0"
+    },
+    {
+      "category": "productivity",
+      "config_template": {},
+      "description": "Contentful content management: content types, entries, assets, environments and releases in your space.",
+      "featured": false,
+      "id": "contentful",
+      "install": {
+        "kind": "npm",
+        "package": "@contentful/mcp-server",
+        "version": "1.24.5"
+      },
+      "key_badge": "free_key",
+      "license": "MIT",
+      "name": "Contentful MCP",
+      "publisher": "Contentful",
+      "required_secrets": [
+        {
+          "description": "Contentful content management (CMA) token for your space",
+          "in": "env",
+          "name": "CONTENTFUL_MANAGEMENT_ACCESS_TOKEN"
+        },
+        {
+          "description": "Contentful space id",
+          "in": "env",
+          "name": "SPACE_ID"
+        },
+        {
+          "description": "Contentful environment id, e.g. master",
+          "in": "env",
+          "name": "ENVIRONMENT_ID"
+        }
+      ],
+      "risk_notes": [
+        "The management token can create, change and delete content in the space - scope it to one space and environment."
+      ],
+      "source_url": "https://github.com/contentful/contentful-mcp-server",
+      "tool_count_estimate": 88,
+      "transport": "stdio",
+      "verified": false,
+      "version": "1.24.5"
+    },
+    {
+      "category": "database",
+      "config_template": {},
+      "description": "Semantic memory in a Qdrant vector database: store and retrieve text with embeddings. Runs embedded on this machine by default, or against your Qdrant server.",
+      "featured": false,
+      "id": "qdrant",
+      "install": {
+        "kind": "pypi",
+        "package": "mcp-server-qdrant",
+        "version": "0.8.1"
+      },
+      "key_badge": "keyless",
+      "license": "",
+      "name": "Qdrant MCP",
+      "publisher": "Qdrant",
+      "required_secrets": [
+        {
+          "description": "Directory for the embedded local Qdrant database. For a remote Qdrant instead, clear this after install and set QDRANT_URL and QDRANT_API_KEY in the server's env",
+          "in": "env",
+          "name": "QDRANT_LOCAL_PATH"
+        }
+      ],
+      "risk_notes": [
+        "Stores embeddings of whatever the agent saves into the configured collection."
+      ],
+      "source_url": "https://github.com/qdrant/mcp-server-qdrant",
+      "tool_count_estimate": 2,
+      "transport": "stdio",
+      "verified": false,
+      "version": "0.8.1"
+    },
+    {
+      "category": "database",
+      "config_template": {},
+      "description": "Query ClickHouse: list databases and tables and run SQL against your instance.",
+      "featured": false,
+      "id": "clickhouse",
+      "install": {
+        "kind": "pypi",
+        "package": "mcp-clickhouse",
+        "version": "0.7.0"
+      },
+      "key_badge": "free_key",
+      "license": "",
+      "name": "ClickHouse MCP",
+      "publisher": "ClickHouse",
+      "required_secrets": [
+        {
+          "description": "ClickHouse host, e.g. localhost or your ClickHouse Cloud host",
+          "in": "env",
+          "name": "CLICKHOUSE_HOST"
+        },
+        {
+          "description": "ClickHouse user",
+          "in": "env",
+          "name": "CLICKHOUSE_USER"
+        },
+        {
+          "description": "ClickHouse password",
+          "in": "env",
+          "name": "CLICKHOUSE_PASSWORD"
+        }
+      ],
+      "risk_notes": [
+        "run_query executes the SQL it is given with the configured user's permissions - use a read-only user if the agent should not write."
+      ],
+      "source_url": "https://github.com/ClickHouse/mcp-clickhouse",
+      "tool_count_estimate": 3,
+      "transport": "stdio",
+      "verified": false,
+      "version": "0.7.0"
+    },
+    {
+      "category": "utilities",
+      "config_template": {},
+      "description": "ElevenLabs audio AI: text-to-speech, speech-to-text, voice cloning, conversational agents, music and sound effects through your own API key.",
+      "featured": false,
+      "id": "elevenlabs",
+      "install": {
+        "kind": "pypi",
+        "package": "elevenlabs-mcp",
+        "version": "0.12.2"
+      },
+      "key_badge": "paid",
+      "license": "MIT",
+      "name": "ElevenLabs MCP",
+      "publisher": "ElevenLabs",
+      "required_secrets": [
+        {
+          "description": "ElevenLabs API key - calls consume your ElevenLabs credits",
+          "in": "env",
+          "name": "ELEVENLABS_API_KEY"
+        }
+      ],
+      "risk_notes": [
+        "Calls consume paid ElevenLabs credits; the outbound-call tool places real phone calls through a configured agent."
+      ],
+      "source_url": "https://github.com/elevenlabs/elevenlabs-mcp",
+      "tool_count_estimate": 27,
+      "transport": "stdio",
+      "verified": false,
+      "version": "0.12.2"
+    },
+    {
+      "category": "infrastructure",
+      "config_template": {},
+      "description": "Call AWS APIs from your agent: propose and run AWS CLI-style operations across services, using your own AWS credentials.",
+      "featured": false,
+      "id": "aws-api",
+      "install": {
+        "kind": "pypi",
+        "package": "awslabs.aws-api-mcp-server",
+        "version": "1.6.0"
+      },
+      "key_badge": "free_key",
+      "license": "Apache-2.0",
+      "name": "AWS API MCP",
+      "publisher": "Amazon Web Services",
+      "required_secrets": [
+        {
+          "description": "AWS access key id for the identity the server should act as",
+          "in": "env",
+          "name": "AWS_ACCESS_KEY_ID"
+        },
+        {
+          "description": "AWS secret access key",
+          "in": "env",
+          "name": "AWS_SECRET_ACCESS_KEY"
+        },
+        {
+          "description": "Default AWS region, e.g. us-east-1",
+          "in": "env",
+          "name": "AWS_REGION"
+        }
+      ],
+      "risk_notes": [
+        "call_aws can invoke almost any AWS API action with the configured credentials - use a least-privilege IAM user and review calls before approving them."
+      ],
+      "source_url": "https://github.com/awslabs/mcp",
+      "tool_count_estimate": 2,
+      "transport": "stdio",
+      "verified": false,
+      "version": "1.6.0"
     }
   ],
   "registry_synced_at": "2026-11-01",
