@@ -8,16 +8,16 @@
         "handle": "ryanowlops",
         "name": "Son"
       },
-      "description": "Theo dõi trang giá của đối thủ mỗi ngày và báo cáo thay đổi một cách chính xác và chi tiết.",
+      "description": "Track competitor pricing pages every day and report changes accurately and in detail.",
       "category": "Research",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "license": "MIT",
       "price": {
         "amount": 0,
         "currency": "USD"
       },
       "package": "packages/ryanowlops/scout.json",
-      "sha256": "dcb36cb6d92538263144536ddd70e3d00d734941a93d5c8da9effc53bfdebbe9",
+      "sha256": "9be6a2fbe028cc6159901f865c593762a684bf27fc2594258588c2d23aad3502",
       "featured": false
     }
   ]
