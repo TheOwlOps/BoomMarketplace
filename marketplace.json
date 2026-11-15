@@ -5941,7 +5941,682 @@
    "transport": "stdio",
    "verified": false,
    "version": "1.6.0"
-  }
+  },
+ {
+  "category": "infrastructure",
+  "config_template": {
+   "args": [
+    "-y",
+    "@azure/mcp@4.0.0-beta.7",
+    "server",
+    "start"
+   ],
+   "command": "npx"
+  },
+  "description": "Microsoft's official MCP server for Azure: manage resources, storage, databases, AKS, App Service and more across your Azure subscriptions.",
+  "featured": true,
+  "id": "azure",
+  "key_badge": "free_key",
+  "license": "MIT",
+  "name": "Azure MCP",
+  "publisher": "Microsoft",
+  "required_secrets": [],
+  "risk_notes": [
+   "Runs with the Azure identity you sign in with (Azure CLI `az login` or environment credentials) — it can create, modify and delete Azure resources. Review calls before approving them.",
+   "Microsoft's current release channel for this server is beta — the pinned version is their latest tag."
+  ],
+  "source_url": "https://github.com/microsoft/mcp",
+  "tool_count_estimate": 73,
+  "transport": "stdio",
+  "verified": true,
+  "version": "4.0.0-beta.7"
+ },
+ {
+  "category": "database",
+  "config_template": {
+   "args": [
+    "mcp-server-motherduck@1.1.1",
+    "--db-path",
+    ":memory:",
+    "--read-write"
+   ],
+   "command": "uvx"
+  },
+  "description": "Run SQL with DuckDB: instant local analytics — create tables, load CSV/Parquet/JSON with SQL, and query. Edit the --db-path argument in the review screen to open one of your own DuckDB files or a MotherDuck cloud database instead.",
+  "featured": true,
+  "id": "motherduck",
+  "key_badge": "keyless",
+  "license": "",
+  "name": "DuckDB (MotherDuck)",
+  "publisher": "MotherDuck",
+  "required_secrets": [],
+  "risk_notes": [
+   "The shipped template starts on a throwaway in-memory database with read-write enabled; nothing persists after the server stops."
+  ],
+  "source_url": "https://github.com/motherduckdb/mcp-server-motherduck",
+  "tool_count_estimate": 4,
+  "transport": "stdio",
+  "verified": true,
+  "version": "1.1.1"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Deploy and manage Netlify sites: builds, deploys, domains, forms and environment variables.",
+  "featured": false,
+  "id": "netlify",
+  "install": {
+   "kind": "npm",
+   "package": "@netlify/mcp",
+   "version": "1.22.1"
+  },
+  "key_badge": "free_key",
+  "license": "ISC",
+  "name": "Netlify MCP",
+  "publisher": "Netlify",
+  "required_secrets": [
+   {
+    "description": "Netlify personal access token — create one under User settings → Applications → Personal access tokens in your Netlify dashboard",
+    "in": "env",
+    "name": "NETLIFY_AUTH_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "Can deploy and modify your Netlify sites with the token's permissions."
+  ],
+  "source_url": "https://github.com/netlify/netlify-mcp",
+  "tool_count_estimate": 10,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.22.1"
+ },
+ {
+  "category": "productivity",
+  "config_template": {},
+  "description": "Read and write Airtable bases: list and search records, create and update rows, inspect and change table schemas.",
+  "featured": false,
+  "id": "airtable",
+  "install": {
+   "kind": "npm",
+   "package": "airtable-mcp-server",
+   "version": "1.14.0"
+  },
+  "key_badge": "free_key",
+  "license": "MIT",
+  "name": "Airtable MCP",
+  "publisher": "domdomegg",
+  "required_secrets": [
+   {
+    "description": "Airtable personal access token (starts with 'pat') — create at airtable.com/create/tokens; the server refuses to start without it",
+    "in": "env",
+    "name": "AIRTABLE_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "The token's scopes and base grants decide exactly what the agent can see and change — grant the fewest bases you need."
+  ],
+  "source_url": "https://github.com/domdomegg/airtable-mcp-server",
+  "tool_count_estimate": 16,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.14.0"
+ },
+ {
+  "category": "browser",
+  "config_template": {},
+  "description": "Hosted cloud browsers with Stagehand automation: open sessions, navigate, act on pages and extract structured data.",
+  "featured": false,
+  "id": "browserbase",
+  "install": {
+   "kind": "npm",
+   "package": "@browserbasehq/mcp-server-browserbase",
+   "version": "2.4.3"
+  },
+  "key_badge": "free_key",
+  "license": "Apache-2.0",
+  "name": "Browserbase MCP",
+  "publisher": "Browserbase",
+  "required_secrets": [
+   {
+    "description": "Browserbase API key from your Browserbase dashboard",
+    "in": "env",
+    "name": "BROWSERBASE_API_KEY"
+   },
+   {
+    "description": "Browserbase project ID from your Browserbase dashboard",
+    "in": "env",
+    "name": "BROWSERBASE_PROJECT_ID"
+   }
+  ],
+  "risk_notes": [
+   "Sessions run in Browserbase's cloud and are billed to your account."
+  ],
+  "source_url": "https://github.com/browserbase/mcp-server-browserbase",
+  "tool_count_estimate": 9,
+  "transport": "stdio",
+  "verified": false,
+  "version": "2.4.3"
+ },
+ {
+  "category": "utilities",
+  "config_template": {},
+  "description": "Translate text and documents and rephrase with DeepL, including glossaries and style rules.",
+  "featured": false,
+  "id": "deepl",
+  "install": {
+   "kind": "npm",
+   "package": "deepl-mcp-server",
+   "version": "1.3.15"
+  },
+  "key_badge": "free_key",
+  "license": "MIT",
+  "name": "DeepL MCP",
+  "publisher": "DeepL",
+  "required_secrets": [
+   {
+    "description": "DeepL API key — a free API plan key works (deepl.com/pro-api); the server refuses to start without one",
+    "in": "env",
+    "name": "DEEPL_API_KEY"
+   }
+  ],
+  "risk_notes": [],
+  "source_url": "https://github.com/DeepL/deepl-mcp-server",
+  "tool_count_estimate": 13,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.3.15"
+ },
+ {
+  "category": "web",
+  "config_template": {},
+  "description": "Bright Data's web platform as tools: search engines, scrape pages as markdown, and run hosted dataset scrapers.",
+  "featured": false,
+  "id": "brightdata",
+  "install": {
+   "kind": "npm",
+   "package": "@brightdata/mcp",
+   "version": "4.8.0"
+  },
+  "key_badge": "freemium",
+  "license": "MIT",
+  "name": "Bright Data MCP",
+  "publisher": "Bright Data",
+  "required_secrets": [
+   {
+    "description": "Bright Data API token — from your Bright Data account settings (API tokens)",
+    "in": "env",
+    "name": "API_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "Scraping runs on Bright Data's paid network — usage is billed to your account beyond any trial credit."
+  ],
+  "source_url": "https://github.com/brightdata/brightdata-mcp",
+  "tool_count_estimate": 30,
+  "transport": "stdio",
+  "verified": false,
+  "version": "4.8.0"
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Search and inspect an Elasticsearch cluster: list indices, read mappings, run queries, check shard health.",
+  "featured": false,
+  "id": "elasticsearch",
+  "install": {
+   "kind": "npm",
+   "package": "@elastic/mcp-server-elasticsearch",
+   "version": "0.3.1"
+  },
+  "key_badge": "free_key",
+  "license": "Apache-2.0",
+  "name": "Elasticsearch MCP",
+  "publisher": "Elastic",
+  "required_secrets": [
+   {
+    "description": "Elasticsearch endpoint, e.g. http://localhost:9200 or your Elastic Cloud URL",
+    "in": "env",
+    "name": "ES_URL"
+   },
+   {
+    "description": "Elasticsearch API key (or use ES_USERNAME + ES_PASSWORD instead)",
+    "in": "env",
+    "name": "ES_API_KEY"
+   },
+   {
+    "description": "Elasticsearch username (alternative to an API key)",
+    "in": "env",
+    "name": "ES_USERNAME"
+   },
+   {
+    "description": "Elasticsearch password (alternative to an API key)",
+    "in": "env",
+    "name": "ES_PASSWORD"
+   }
+  ],
+  "risk_notes": [
+   "The search tool runs the queries it is given with the configured credentials — use a read-only role if the agent should not write."
+  ],
+  "source_url": "https://github.com/elastic/mcp-server-elasticsearch",
+  "tool_count_estimate": 4,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.3.1"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Inspect CircleCI pipelines — build failure logs, flaky tests, job results — and run or rerun pipelines.",
+  "featured": false,
+  "id": "circleci",
+  "install": {
+   "kind": "npm",
+   "package": "@circleci/mcp-server-circleci",
+   "version": "0.20.0"
+  },
+  "key_badge": "free_key",
+  "license": "Apache-2.0",
+  "name": "CircleCI MCP",
+  "publisher": "CircleCI",
+  "required_secrets": [
+   {
+    "description": "CircleCI personal API token (User Settings → Personal API Tokens)",
+    "in": "env",
+    "name": "CIRCLECI_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "Includes tools that run pipelines and rerun workflows — those consume build credits on your account."
+  ],
+  "source_url": "https://github.com/CircleCI-Public/mcp-server-circleci",
+  "tool_count_estimate": 13,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.20.0"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Manage Heroku apps, dynos, add-ons, pipelines and logs.",
+  "featured": false,
+  "id": "heroku",
+  "install": {
+   "kind": "npm",
+   "package": "@heroku/mcp-server",
+   "version": "1.2.14"
+  },
+  "key_badge": "free_key",
+  "license": "Apache-2.0",
+  "name": "Heroku MCP",
+  "publisher": "Heroku",
+  "required_secrets": [
+   {
+    "description": "Heroku API key — Account settings → API Key, or `heroku authorizations:create`",
+    "in": "env",
+    "name": "HEROKU_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "Can create, rename and put apps into maintenance and change add-ons — changes can incur Heroku charges."
+  ],
+  "source_url": "https://github.com/heroku/heroku-mcp-server",
+  "tool_count_estimate": 33,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.2.14"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "The DigitalOcean API as tools: droplets, managed databases, Kubernetes, Spaces, networking, apps and billing.",
+  "featured": false,
+  "id": "digitalocean",
+  "install": {
+   "kind": "npm",
+   "package": "@digitalocean/mcp",
+   "version": "1.6.7"
+  },
+  "key_badge": "free_key",
+  "license": "MIT",
+  "name": "DigitalOcean MCP",
+  "publisher": "DigitalOcean",
+  "required_secrets": [
+   {
+    "description": "DigitalOcean API token (API → Tokens in the control panel); the server refuses to start without one",
+    "in": "env",
+    "name": "DIGITALOCEAN_API_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "Very large surface (469 tools measured) with full account power — a write-scoped token can create and destroy billable resources. Prefer a read-only or narrowly scoped token."
+  ],
+  "source_url": "https://github.com/digitalocean-labs/mcp-digitalocean",
+  "tool_count_estimate": 469,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.6.7"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Confluent Cloud and Kafka: topics, messages, connectors, Flink and Schema Registry — plus offline product documentation tools that work with no account.",
+  "featured": false,
+  "id": "confluent",
+  "install": {
+   "kind": "npm",
+   "package": "@confluentinc/mcp-confluent",
+   "version": "1.6.1"
+  },
+  "key_badge": "free_key",
+  "license": "MIT",
+  "name": "Confluent MCP",
+  "publisher": "Confluent",
+  "required_secrets": [
+   {
+    "description": "Confluent Cloud API key (Cloud settings → API keys) — unlocks the cloud/Kafka tools beyond the built-in docs tools",
+    "in": "env",
+    "name": "CONFLUENT_CLOUD_API_KEY"
+   },
+   {
+    "description": "The secret paired with the Confluent Cloud API key",
+    "in": "env",
+    "name": "CONFLUENT_CLOUD_API_SECRET"
+   }
+  ],
+  "risk_notes": [
+   "With no connection configured the server starts with only its documentation tools (6 measured); Kafka and cloud tools appear once connections are configured via environment."
+  ],
+  "source_url": "https://github.com/confluentinc/mcp-confluent",
+  "tool_count_estimate": 6,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.6.1"
+ },
+ {
+  "category": "docs",
+  "config_template": {},
+  "description": "Convert files and web pages (PDF, Word documents, spreadsheets, HTML and more) to clean Markdown, using Microsoft's MarkItDown.",
+  "featured": false,
+  "id": "markitdown",
+  "install": {
+   "kind": "pypi",
+   "package": "markitdown-mcp",
+   "version": "0.0.1a8"
+  },
+  "key_badge": "keyless",
+  "license": "MIT",
+  "name": "MarkItDown",
+  "publisher": "Microsoft",
+  "required_secrets": [],
+  "risk_notes": [
+   "The converter fetches http(s) URIs and reads local file paths it is given, with the user's own permissions."
+  ],
+  "source_url": "https://github.com/microsoft/markitdown",
+  "tool_count_estimate": 1,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.0.1a8"
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Query a Neo4j graph database with Cypher: read its schema, run read queries, and write through a separate tool.",
+  "featured": false,
+  "id": "neo4j-cypher",
+  "install": {
+   "kind": "pypi",
+   "package": "mcp-neo4j-cypher",
+   "version": "0.6.0"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Neo4j Cypher MCP",
+  "publisher": "Neo4j",
+  "required_secrets": [
+   {
+    "description": "Neo4j Bolt URI, e.g. bolt://localhost:7687 or neo4j+s://your-instance.databases.neo4j.io",
+    "in": "env",
+    "name": "NEO4J_URI"
+   },
+   {
+    "description": "Neo4j user",
+    "in": "env",
+    "name": "NEO4J_USERNAME"
+   },
+   {
+    "description": "Neo4j password",
+    "in": "env",
+    "name": "NEO4J_PASSWORD"
+   }
+  ],
+  "risk_notes": [
+   "The write tool executes arbitrary Cypher with the configured user's permissions — use a read-only user if the agent should not modify the graph."
+  ],
+  "source_url": "https://github.com/neo4j-contrib/mcp-neo4j",
+  "tool_count_estimate": 3,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.6.0"
+ },
+ {
+  "category": "productivity",
+  "config_template": {},
+  "description": "Work in an Obsidian vault: list, read, search, append and patch notes, through the Local REST API plugin.",
+  "featured": false,
+  "id": "obsidian",
+  "install": {
+   "kind": "pypi",
+   "package": "mcp-obsidian",
+   "version": "0.2.3"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Obsidian MCP",
+  "publisher": "MarkusPfundstein",
+  "required_secrets": [
+   {
+    "description": "API key from the 'Local REST API' community plugin inside Obsidian (shown on the plugin's settings page); the server refuses to start without it",
+    "in": "env",
+    "name": "OBSIDIAN_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "Needs Obsidian running with the Local REST API plugin enabled; the tools edit real notes in the vault."
+  ],
+  "source_url": "https://github.com/MarkusPfundstein/mcp-obsidian",
+  "tool_count_estimate": 15,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.2.3"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Manage Docker containers and images: list, create, run, stop, read logs, pull and push images.",
+  "featured": false,
+  "id": "docker",
+  "install": {
+   "kind": "pypi",
+   "package": "mcp-server-docker",
+   "version": "0.3.0"
+  },
+  "key_badge": "keyless",
+  "license": "GPL-3.0",
+  "name": "Docker MCP",
+  "publisher": "ckreiling",
+  "required_secrets": [],
+  "risk_notes": [
+   "Requires a running Docker daemon and acts with the daemon's full authority — treat it like shell access to the host."
+  ],
+  "source_url": "https://github.com/ckreiling/mcp-server-docker",
+  "tool_count_estimate": 19,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.3.0"
+ },
+ {
+  "category": "observability",
+  "config_template": {},
+  "description": "Query Prometheus: instant and range PromQL queries, metric metadata, targets and server health.",
+  "featured": false,
+  "id": "prometheus",
+  "install": {
+   "kind": "pypi",
+   "package": "prometheus-mcp-server",
+   "version": "1.6.2"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Prometheus MCP",
+  "publisher": "pab1it0",
+  "required_secrets": [
+   {
+    "description": "Base URL of your Prometheus server, e.g. http://localhost:9090; the server refuses to start without it",
+    "in": "env",
+    "name": "PROMETHEUS_URL"
+   }
+  ],
+  "risk_notes": [],
+  "source_url": "https://github.com/pab1it0/prometheus-mcp-server",
+  "tool_count_estimate": 6,
+  "transport": "stdio",
+  "verified": false,
+  "version": "1.6.2"
+ },
+ {
+  "category": "web",
+  "config_template": {},
+  "description": "Run Apify actors — thousands of ready-made web scrapers and automations — and read their results.",
+  "featured": false,
+  "id": "apify",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.apify.com"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Apify MCP",
+  "publisher": "Apify",
+  "required_secrets": [],
+  "risk_notes": [
+   "Runs consume your Apify account's usage credits."
+  ],
+  "source_url": "https://github.com/apify/apify-mcp-server",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "productivity",
+  "config_template": {},
+  "description": "Work with monday.com boards, items and updates through monday's official MCP server.",
+  "featured": false,
+  "id": "monday",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.monday.com/mcp"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "monday.com MCP",
+  "publisher": "monday.com",
+  "required_secrets": [],
+  "risk_notes": [],
+  "source_url": "https://monday.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "productivity",
+  "config_template": {},
+  "description": "Manage ClickUp tasks, lists, docs and goals through ClickUp's official MCP server.",
+  "featured": false,
+  "id": "clickup",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.clickup.com/mcp"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "ClickUp MCP",
+  "publisher": "ClickUp",
+  "required_secrets": [],
+  "risk_notes": [],
+  "source_url": "https://clickup.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "payments",
+  "config_template": {},
+  "description": "PayPal business tools: invoices, orders, payments, disputes and reporting through PayPal's official MCP server.",
+  "featured": false,
+  "id": "paypal",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.paypal.com/mcp"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "PayPal MCP",
+  "publisher": "PayPal",
+  "required_secrets": [],
+  "risk_notes": [],
+  "source_url": "https://developer.paypal.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "payments",
+  "config_template": {},
+  "description": "Square business tools: payments, orders, customers, catalog and inventory through Square's official MCP server.",
+  "featured": false,
+  "id": "square",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.squareup.com/mcp"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Square MCP",
+  "publisher": "Square",
+  "required_secrets": [],
+  "risk_notes": [],
+  "source_url": "https://developer.squareup.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Manage Render services, deploys, databases, logs and metrics.",
+  "featured": false,
+  "id": "render",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.render.com/mcp"
+  },
+  "key_badge": "free_key",
+  "license": "",
+  "name": "Render MCP",
+  "publisher": "Render",
+  "required_secrets": [
+   {
+    "description": "Render API key (Dashboard → Account Settings → API Keys) — value format: Bearer <key>",
+    "in": "header",
+    "name": "Authorization"
+   }
+  ],
+  "risk_notes": [],
+  "source_url": "https://render.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ }
  ],
  "registry_synced_at": "2026-11-01",
  "version": 1
