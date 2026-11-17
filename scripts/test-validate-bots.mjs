@@ -13,10 +13,11 @@
 
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildBotIndex, renderBotIndex } from "./bot-index.mjs";
 
 const GATE = join(dirname(fileURLToPath(import.meta.url)), "validate-bots.mjs");
 const sha = (text) => createHash("sha256").update(text, "utf8").digest("hex");
@@ -64,9 +65,12 @@ function entryFor(pkgText, pkg, overrides = {}) {
 }
 
 // Write a snapshot dir: bots.json from entries + package files given
-// as {pkgObject|rawText}. Returns nothing; mutates the dir.
+// as {pkgObject|rawText}, plus a freshly generated bot-index.json
+// (check 10 requires the committed index to match the catalog).
+// Returns nothing; mutates the dir.
 function writeSnapshot(dir, packages, entries) {
   mkdirSync(join(dir, "packages"), { recursive: true });
+  const values = new Map();
   for (const p of packages) {
     const text = typeof p === "string" ? p : JSON.stringify(p, null, 2) + "\n";
     const handle = typeof p === "string" ? "alice" : p.author.handle;
@@ -74,11 +78,17 @@ function writeSnapshot(dir, packages, entries) {
     const d = join(dir, "packages", handle);
     mkdirSync(d, { recursive: true });
     writeFileSync(join(d, `${slug}.json`), text);
+    let value = null;
+    try {
+      value = JSON.parse(text);
+    } catch {
+      value = null;
+    }
+    values.set(`packages/${handle}/${slug}.json`, value);
   }
-  writeFileSync(
-    join(dir, "bots.json"),
-    JSON.stringify({ version: 1, bots: entries }, null, 2) + "\n",
-  );
+  const index = { version: 1, bots: entries };
+  writeFileSync(join(dir, "bots.json"), JSON.stringify(index, null, 2) + "\n");
+  writeFileSync(join(dir, "bot-index.json"), renderBotIndex(buildBotIndex(index, values)));
 }
 
 function snapshotWith(pkgOverrides = {}, entryOverrides = {}) {
@@ -202,6 +212,19 @@ localCase(
   { failCheck: 8 },
 );
 
+// --- Check 2: discovery metadata (keywords / domains) --------------------------------
+localCase(
+  "valid keywords + domains pass",
+  snapshotWith({}, { keywords: ["page watcher", "change alerts"], domains: ["example.com", "app.example.com"] }),
+);
+localCase("keywords not an array", snapshotWith({}, { keywords: "page watcher" }), { failCheck: 2 });
+localCase("duplicated keyword", snapshotWith({}, { keywords: ["Watcher", "watcher"] }), { failCheck: 2 });
+localCase("keyword over the cap", snapshotWith({}, { keywords: Array.from({ length: 11 }, (_, i) => `term-${i}`) }), {
+  failCheck: 2,
+});
+localCase("domain carrying a scheme", snapshotWith({}, { domains: ["https://example.com"] }), { failCheck: 2 });
+localCase("domain with a path", snapshotWith({}, { domains: ["example.com/pricing"] }), { failCheck: 2 });
+
 // --- Check 9: cross-consistency -----------------------------------------------------
 localCase("index sha256 does not match package bytes", snapshotWith({}, { sha256: "0".repeat(64) }), {
   failCheck: 9,
@@ -210,6 +233,32 @@ localCase("non-zero price", snapshotWith({ price: { amount: 5, currency: "USD" }
   failCheck: 9,
 });
 
+// --- Check 10: component index freshness ----------------------------------------------
+{
+  const dir = snapshotWith();
+  writeFileSync(join(dir, "bot-index.json"), "{}\n");
+  localCase("stale bot-index.json", dir, { failCheck: 10 });
+}
+{
+  const dir = snapshotWith();
+  rmSync(join(dir, "bot-index.json"));
+  localCase("missing bot-index.json", dir, { failCheck: 10 });
+}
+{
+  // A package whose bundled skill lands in the generated index.
+  const dir = snapshotWith({
+    skills: [
+      {
+        name: "page-watcher",
+        skill_md:
+          "---\nname: page-watcher\ndescription: Watches a page and reports changes.\n---\nWatch carefully.\n",
+      },
+    ],
+    skill_names: ["page-watcher"],
+  });
+  localCase("bundled skill indexed + fresh passes", dir);
+}
+
 // --- PR-mode cases ---------------------------------------------------------------------
 function emptyBase() {
   const dir = mkdtempSync(join(tmpdir(), "bots-base-"));
@@ -217,9 +266,15 @@ function emptyBase() {
   return dir;
 }
 {
-  // Valid PR: alice adds her own new package.
+  // Valid PR: alice adds her own new package (+ regenerated index).
   const head = snapshotWith();
-  prCase("valid PR (own new package)", head, emptyBase(), ["bots.json", "packages/alice/helper-bot.json"], "alice");
+  prCase(
+    "valid PR (own new package)",
+    head,
+    emptyBase(),
+    ["bots.json", "bot-index.json", "packages/alice/helper-bot.json"],
+    "alice",
+  );
 }
 {
   // Diff scope: touching blocklist.json.
@@ -302,7 +357,7 @@ for (const c of cases) {
   let ok;
   let detail;
   if (c.failCheck !== null && c.failCheck !== undefined) {
-    const m = out.match(/check (\d+)\/9 .*— FAIL/);
+    const m = out.match(/check (\d+)\/10 .*— FAIL/);
     ok = code === 1 && m && Number(m[1]) === c.failCheck && out.includes(`ERROR [check ${c.failCheck}]`);
     detail = `expected stop at check ${c.failCheck}, got exit ${code}${m ? `, stopped at check ${m[1]}` : ""}`;
   } else if (c.warnCheck) {

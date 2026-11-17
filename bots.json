@@ -18,7 +18,13 @@
       },
       "package": "packages/ryanowlops/scout.json",
       "sha256": "9be6a2fbe028cc6159901f865c593762a684bf27fc2594258588c2d23aad3502",
-      "featured": false
+      "featured": false,
+      "keywords": [
+        "competitor pricing",
+        "price tracking",
+        "pricing pages",
+        "price changes"
+      ]
     }
   ]
 }

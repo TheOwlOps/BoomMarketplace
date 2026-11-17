@@ -2,10 +2,13 @@
 /**
  * validate-bots.mjs — the CI gate for community bot packages.
  *
- * Implements the nine checks of the Boom bot-marketplace design
+ * Implements the checks of the Boom bot-marketplace design
  * (Boom repo: docs — marketplace-open/DESIGN.md §7.3) IN ORDER, failing
  * fast: the first check that produces an error stops the run, so a red
- * PR names exactly one check. Warnings never fail the run.
+ * PR names exactly one check. Warnings never fail the run. Checks 1–9
+ * are the design's gate; check 10 (component-index freshness) guards
+ * the generated bot-index.json the same way — derived data is either
+ * regenerated or the PR is red.
  *
  * One source of logic for both worlds:
  *   - Local / catalog mode (no --author): validate a whole catalog
@@ -35,6 +38,7 @@ import {
   statSync,
 } from "node:fs";
 import { join, relative, sep } from "node:path";
+import { buildBotIndex, renderBotIndex } from "./bot-index.mjs";
 
 // ---------------------------------------------------------------------------
 // Data copied from the Boom app (source pointers to the Rust originals)
@@ -145,7 +149,18 @@ const INDEX_FIELDS = [
   "package",
   "sha256",
   "featured",
+  "keywords",
+  "domains",
 ];
+
+// Discovery metadata caps (index `keywords` / `domains`): enough
+// terms to be findable, few enough that a listing cannot stuff the
+// suggestion surfaces. Enforced here at the gate; the app parses
+// leniently and simply ignores malformed values.
+const MAX_KEYWORDS = 10;
+const MAX_KEYWORD_CHARS = 60;
+const MAX_DOMAINS = 10;
+const DOMAIN_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 
 const AUTHOR_FIELDS = ["handle", "name", "url"];
 const SKILL_FIELDS = ["name", "skill_md"];
@@ -600,9 +615,15 @@ function readJsonFile(path) {
 }
 
 // A snapshot = { root, index: {version, bots[]} | null, indexError,
-// packages: Map<relPath, {handle, slug, raw, value, parseError}> }.
+// packages: Map<relPath, {handle, slug, raw, value, parseError}>,
+// botIndexRaw: string | null (the committed bot-index.json bytes,
+// for check 10's freshness comparison) }.
 function loadSnapshot(root) {
-  const snap = { root, index: null, indexError: null, packages: new Map() };
+  const snap = { root, index: null, indexError: null, packages: new Map(), botIndexRaw: null };
+  const botIndexPath = join(root, "bot-index.json");
+  if (existsSync(botIndexPath)) {
+    snap.botIndexRaw = readFileSync(botIndexPath, "utf8");
+  }
   const indexPath = join(root, "bots.json");
   if (!existsSync(indexPath)) {
     snap.indexError = "bots.json not found";
@@ -655,6 +676,7 @@ const CHECK_NAMES = [
   "safety-pattern scan",
   "skill validation",
   "cross-consistency",
+  "component index freshness",
 ];
 
 function runGate(opts) {
@@ -696,10 +718,14 @@ function runGate(opts) {
     } else {
       for (const path of opts.files) {
         if (path === "bots.json") continue;
+        // bot-index.json is generated from the catalog (check 10
+        // verifies it matches); a listing change regenerates it, so
+        // it is a legal part of any submission PR.
+        if (path === "bot-index.json") continue;
         if (path.startsWith(`packages/${authorLower}/`)) continue;
         err(
           1,
-          `PR touches '${path}' — a submission PR may only touch bots.json and its own packages/${authorLower}/ folder`,
+          `PR touches '${path}' — a submission PR may only touch bots.json, bot-index.json and its own packages/${authorLower}/ folder`,
           path,
         );
       }
@@ -805,6 +831,50 @@ function runGate(opts) {
       }
       if (entry.featured !== undefined && typeof entry.featured !== "boolean") {
         err(2, `${at}: 'featured' must be a boolean`, "bots.json");
+      }
+      // Discovery metadata (optional): `keywords` are the terms that
+      // should find this listing in Marketplace search; `domains`
+      // are the hosts that suggest it when a user pastes a link.
+      // Both are plain data — caps keep the suggestion surfaces
+      // honest (a listing stuffed with terms would mis-fire them).
+      if (entry.keywords !== undefined) {
+        if (!Array.isArray(entry.keywords) || entry.keywords.some((k) => typeof k !== "string")) {
+          err(2, `${at}: 'keywords' must be an array of strings`, "bots.json");
+        } else {
+          if (entry.keywords.length > MAX_KEYWORDS) {
+            err(2, `${at}: 'keywords' has ${entry.keywords.length} terms — the cap is ${MAX_KEYWORDS}`, "bots.json");
+          }
+          const seenKw = new Set();
+          for (const k of entry.keywords) {
+            const term = k.trim();
+            if (term === "" || term.length > MAX_KEYWORD_CHARS) {
+              err(2, `${at}: keyword ${JSON.stringify(k)} must be 1–${MAX_KEYWORD_CHARS} characters`, "bots.json");
+            }
+            if (seenKw.has(term.toLowerCase())) {
+              err(2, `${at}: keyword '${term}' is duplicated`, "bots.json");
+            }
+            seenKw.add(term.toLowerCase());
+          }
+        }
+      }
+      if (entry.domains !== undefined) {
+        if (!Array.isArray(entry.domains) || entry.domains.some((d) => typeof d !== "string")) {
+          err(2, `${at}: 'domains' must be an array of strings`, "bots.json");
+        } else {
+          if (entry.domains.length > MAX_DOMAINS) {
+            err(2, `${at}: 'domains' has ${entry.domains.length} hosts — the cap is ${MAX_DOMAINS}`, "bots.json");
+          }
+          const seenDom = new Set();
+          for (const d of entry.domains) {
+            if (!DOMAIN_RE.test(d)) {
+              err(2, `${at}: domain ${JSON.stringify(d)} is not a bare lowercase hostname (no scheme, path or port)`, "bots.json");
+            }
+            if (seenDom.has(d)) {
+              err(2, `${at}: domain '${d}' is duplicated`, "bots.json");
+            }
+            seenDom.add(d);
+          }
+        }
       }
     }
 
@@ -1266,6 +1336,33 @@ function runGate(opts) {
     }
   }
 
+  // ---- Check 10: component index freshness -------------------------------
+  // bot-index.json is generated from bots.json + packages/** (see
+  // scripts/bot-index.mjs); the app reads it to describe listings
+  // without fetching every package. A stale copy would misdescribe
+  // what an install brings, so the committed file must equal a fresh
+  // generation from this snapshot, byte for byte.
+  if (!hasError(9)) {
+    if (head.botIndexRaw === null) {
+      err(
+        10,
+        "bot-index.json is missing — run `node scripts/generate-bot-index.mjs` and commit the result",
+        "bot-index.json",
+      );
+    } else {
+      const values = new Map();
+      for (const [rel, pkg] of head.packages) values.set(rel, pkg.value);
+      const expected = renderBotIndex(buildBotIndex(head.index, values));
+      if (head.botIndexRaw !== expected) {
+        err(
+          10,
+          "bot-index.json is stale — regenerate it with `node scripts/generate-bot-index.mjs` and commit the result",
+          "bot-index.json",
+        );
+      }
+    }
+  }
+
   return { findings, head, base, prMode, isMaintainer };
 }
 
@@ -1316,7 +1413,7 @@ function main() {
 
   const mode = prMode ? `PR by @${opts.author}${isMaintainer ? " (maintainer)" : ""}` : "local snapshot";
   console.log(`validate-bots: ${mode}, root=${opts.root}${opts.baseRoot ? `, base=${opts.baseRoot}` : ""}`);
-  for (let c = 1; c <= 9; c++) {
+  for (let c = 1; c <= CHECK_NAMES.length; c++) {
     let status;
     if (c === 1 && !prMode) status = "skipped (no PR context)";
     else if (c === 5 && !opts.baseRoot) status = "skipped (no base snapshot)";
@@ -1324,7 +1421,7 @@ function main() {
     else if (firstFailed !== null && c > firstFailed) status = "not reached (fail-fast)";
     else status = "OK";
     const w = warnings.filter((f) => f.check === c).length;
-    console.log(`check ${c}/9 ${CHECK_NAMES[c - 1]} — ${status}${w ? ` (${w} warning${w === 1 ? "" : "s"})` : ""}`);
+    console.log(`check ${c}/${CHECK_NAMES.length} ${CHECK_NAMES[c - 1]} — ${status}${w ? ` (${w} warning${w === 1 ? "" : "s"})` : ""}`);
   }
   for (const f of findings) {
     const where = f.file ? `${f.file}: ` : "";

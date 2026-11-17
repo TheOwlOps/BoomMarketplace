@@ -28,10 +28,16 @@ A bot listing is a **recipe** — the bot's instructions and presentation, as on
 
 ### How to submit (the manual door)
 
-Until the in-app exporter ships, submissions are two files in one pull request:
+Until the in-app exporter ships, submissions are two files in one pull request, plus one generated file:
 
 1. **The package** — `packages/<your-login>/<slug>.json`, in the format below.
 2. **The index entry** — one object appended to `bots[]` in `bots.json`, with `"package"` pointing at your file and `"sha256"` set to the SHA-256 of the package file's exact bytes (`sha256sum packages/<your-login>/<slug>.json`). Never compute it by editing a previous hash — the app refuses an entry whose hash does not match its package.
+3. **The component index** — run `node scripts/generate-bot-index.mjs` and include the updated `bot-index.json`. It is generated from your listing (never hand-edit it); CI fails the PR if it is stale.
+
+Two optional fields on the **index entry** (not the package) control how the Marketplace surfaces your listing:
+
+- `keywords` — up to 10 short terms a user would type to find this bot (e.g. `"price tracking"`). They are matched by Marketplace search, so keep them specific to what your bot actually does; generic stuffing is returned in review.
+- `domains` — up to 10 bare hostnames (e.g. `"example.com"`) your bot is built around. When a user pastes a link into the Marketplace, listings whose `domains` cover the link's host are suggested to them. Only list hosts your bot genuinely works with.
 
 Before opening the PR, run the same gate CI will run:
 
@@ -79,4 +85,4 @@ node scripts/validate-bots.mjs --root .
 
 ### What happens after you submit a bot
 
-The `validate-bots` CI gate runs nine checks in order (diff scope; parse + schema; identity + naming; caps; version discipline; credential scan; safety-pattern scan; skill validation; cross-consistency) and reports findings as annotations on the PR. Then the maintainer reads the instructions diff and merges — the human read is a real step, not a formality. To withdraw your own listing, open a PR that removes your entry from `bots.json` and deletes your package file.
+The `validate-bots` CI gate runs ten checks in order (diff scope; parse + schema; identity + naming; caps; version discipline; credential scan; safety-pattern scan; skill validation; cross-consistency; component index freshness) and reports findings as annotations on the PR. Then the maintainer reads the instructions diff and merges — the human read is a real step, not a formality. To withdraw your own listing, open a PR that removes your entry from `bots.json` and deletes your package file.
