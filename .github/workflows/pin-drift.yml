@@ -1,0 +1,31 @@
+# pin-drift — a weekly lookout for MCP catalog pins upstream has
+# moved past. The job is READ-ONLY by design: it runs
+# scripts/check-pin-drift.mjs and writes the report to the job
+# summary. It never commits, never opens a PR, and never bumps a
+# pin — adopting a newer upstream version stays a deliberate,
+# vetted change (see the script header and CONTRIBUTING).
+name: pin-drift
+
+on:
+  schedule:
+    # Mondays 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Report pin drift
+        run: node scripts/check-pin-drift.mjs
