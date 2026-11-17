@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "bots": {
+    "gh-ryanowlops/scout": {
+      "sha256": "9be6a2fbe028cc6159901f865c593762a684bf27fc2594258588c2d23aad3502",
+      "components": {
+        "skills": [],
+        "routines": [],
+        "requires": []
+      }
+    }
+  }
+}

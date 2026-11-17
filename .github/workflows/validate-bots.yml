@@ -6,10 +6,11 @@
 #   `pull_request` workflow that checks out the PR would run with the
 #   PR's own workflow files. So this workflow runs from the BASE
 #   branch (trusted code: scripts/validate-bots.mjs as merged on main),
-#   and fetches the PR's DATA files (bots.json + packages/**) through
-#   the GitHub API into plain snapshot directories. PR content is
-#   never checked out and never executed — the validator only reads
-#   JSON. Findings land as check annotations + the job summary.
+#   and fetches the PR's DATA files (bots.json + bot-index.json +
+#   packages/**) through the GitHub API into plain snapshot
+#   directories. PR content is never checked out and never executed —
+#   the validator only reads JSON. Findings land as check
+#   annotations + the job summary.
 name: validate-bots
 
 on:
@@ -57,7 +58,7 @@ jobs:
             mkdir -p "${dest}/packages"
             gh api "repos/${repo}/git/trees/${sha}?recursive=1" \
               --jq '.tree[] | select(.type == "blob") | .path' \
-              | grep -E '^(bots\.json|packages/[^/]+/[^/]+\.json)$' \
+              | grep -E '^(bots\.json|bot-index\.json|packages/[^/]+/[^/]+\.json)$' \
               | while IFS= read -r path; do
                   mkdir -p "${dest}/$(dirname "${path}")"
                   gh api "repos/${repo}/contents/${path}?ref=${sha}" \
