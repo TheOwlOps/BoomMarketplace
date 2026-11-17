@@ -6616,6 +6616,374 @@
   "transport": "http",
   "verified": false,
   "version": ""
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Redis data operations: strings, hashes, lists, sets, sorted sets, streams, JSON and vector search against your own Redis instance.",
+  "featured": false,
+  "id": "redis",
+  "install": {
+   "kind": "pypi",
+   "package": "redis-mcp-server",
+   "version": "0.5.1"
+  },
+  "key_badge": "keyless",
+  "license": "MIT",
+  "name": "Redis MCP",
+  "publisher": "Redis",
+  "required_secrets": [
+   {
+    "description": "Redis connection URL, e.g. redis://localhost:6379/0 or rediss://user:pass@host:6380/0 — defaults to a local Redis when unset",
+    "in": "env",
+    "name": "REDIS_URL"
+   }
+  ],
+  "risk_notes": [
+   "Includes write and delete commands (set, del, expire, rename) and has no read-only mode of its own — scope access with a Redis ACL user (e.g. +@read -@write) when the agent should not write."
+  ],
+  "source_url": "https://github.com/redis/mcp-redis",
+  "tool_count_estimate": 53,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.5.1"
+ },
+ {
+  "category": "observability",
+  "config_template": {},
+  "description": "Grafana observability: dashboards, Prometheus and Loki queries, traces, alerting, incidents and OnCall for your own Grafana instance.",
+  "featured": false,
+  "id": "grafana",
+  "install": {
+   "kind": "pypi",
+   "package": "mcp-grafana",
+   "version": "2.2.0"
+  },
+  "key_badge": "free_key",
+  "license": "Apache-2.0",
+  "name": "Grafana MCP",
+  "publisher": "Grafana",
+  "required_secrets": [
+   {
+    "description": "Base URL of your Grafana instance, e.g. http://localhost:3000 or https://your-org.grafana.net",
+    "in": "env",
+    "name": "GRAFANA_URL"
+   },
+   {
+    "description": "Grafana service-account token — create one with the Viewer role unless the agent must write",
+    "in": "env",
+    "name": "GRAFANA_SERVICE_ACCOUNT_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "Runs over stdio only. The server's HTTP transport had SSRF flaws fixed in current releases — never expose it over HTTP.",
+   "Includes write tools and a general Grafana API proxy tool; a Viewer-role token makes writes fail at Grafana itself."
+  ],
+  "source_url": "https://github.com/grafana/mcp-grafana",
+  "tool_count_estimate": 80,
+  "transport": "stdio",
+  "verified": false,
+  "version": "2.2.0"
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Pinecone vector database: list and describe indexes, upsert and search documents and records, rerank results.",
+  "featured": false,
+  "id": "pinecone",
+  "install": {
+   "kind": "npm",
+   "package": "@pinecone-database/mcp",
+   "version": "0.4.0"
+  },
+  "key_badge": "freemium",
+  "license": "Apache-2.0",
+  "name": "Pinecone MCP",
+  "publisher": "Pinecone",
+  "required_secrets": [
+   {
+    "description": "Pinecone API key from your Pinecone console — the server acts with that key's full account access",
+    "in": "env",
+    "name": "PINECONE_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "Upsert tools write into your indexes; there is no separate read-only key, so use a key scoped to the indexes the agent needs where Pinecone allows it."
+  ],
+  "source_url": "https://github.com/pinecone-io/pinecone-mcp",
+  "tool_count_estimate": 12,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.4.0"
+ },
+ {
+  "category": "code",
+  "config_template": {},
+  "description": "Postman API workspaces: collections, requests, environments, mocks and monitors, and running collections. Default tool profile measured at install time.",
+  "featured": false,
+  "id": "postman",
+  "install": {
+   "kind": "npm",
+   "package": "@postman/postman-mcp-server",
+   "version": "2.15.0"
+  },
+  "key_badge": "freemium",
+  "license": "Apache-2.0",
+  "name": "Postman MCP",
+  "publisher": "Postman",
+  "required_secrets": [
+   {
+    "description": "Postman API key (starts with PMAK-) from your Postman account settings",
+    "in": "env",
+    "name": "POSTMAN_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "Postman environments often hold real API secrets, and this server can read them and execute real requests by running collections.",
+   "The default profile exposes far fewer tools than the server's --full mode; Boom installs the default."
+  ],
+  "source_url": "https://github.com/postmanlabs/postman-mcp-server",
+  "tool_count_estimate": 42,
+  "transport": "stdio",
+  "verified": false,
+  "version": "2.15.0"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Infisical secrets management: list projects and read or write secrets in the projects your machine identity can reach.",
+  "featured": false,
+  "id": "infisical",
+  "install": {
+   "kind": "npm",
+   "package": "@infisical/mcp",
+   "version": "0.1.0"
+  },
+  "key_badge": "freemium",
+  "license": "Apache-2.0",
+  "name": "Infisical MCP",
+  "publisher": "Infisical",
+  "required_secrets": [
+   {
+    "description": "Client ID of an Infisical machine identity scoped to only the projects the agent needs",
+    "in": "env",
+    "name": "INFISICAL_UNIVERSAL_AUTH_CLIENT_ID"
+   },
+   {
+    "description": "Client secret paired with that machine identity",
+    "in": "env",
+    "name": "INFISICAL_UNIVERSAL_AUTH_CLIENT_SECRET"
+   }
+  ],
+  "risk_notes": [
+   "HIGH RISK: by default the server returns secret VALUES to the model and exposes write/delete secret tools. After installing, set INFISICAL_MASK_SECRET_VALUES=true and INFISICAL_ENABLED_TOOLS=list-projects,list-secrets,get-secret,list-folders in the server's env unless the agent genuinely needs more.",
+   "The server does not enforce permissions itself — the machine identity's project scope is the only boundary."
+  ],
+  "source_url": "https://github.com/Infisical/infisical-mcp-server",
+  "tool_count_estimate": 11,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.1.0"
+ },
+ {
+  "category": "utilities",
+  "config_template": {},
+  "description": "Bitwarden vault access through the Bitwarden CLI: list, read, create and edit vault items in an unlocked vault.",
+  "featured": false,
+  "id": "bitwarden",
+  "install": {
+   "kind": "npm",
+   "package": "@bitwarden/mcp-server",
+   "version": "2026.7.0"
+  },
+  "key_badge": "freemium",
+  "license": "GPL-3.0",
+  "license_note": "GPL-3.0 — this entry only points at the upstream package for the user to install; Boom does not bundle or modify its code.",
+  "name": "Bitwarden MCP",
+  "publisher": "Bitwarden",
+  "required_secrets": [],
+  "risk_notes": [
+   "HIGHEST RISK in this catalog: read tools return passwords, TOTP codes and secure notes as plaintext into the model's context, and edit/delete tools are included.",
+   "Requires the Bitwarden CLI (bw) installed and unlocked; the master password is collected by a native OS prompt, never through the model. Strongly prefer a dedicated vault for the agent over your personal vault, and run it locally only — never host it."
+  ],
+  "source_url": "https://github.com/bitwarden/mcp-server",
+  "tool_count_estimate": 59,
+  "transport": "stdio",
+  "verified": false,
+  "version": "2026.7.0"
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "RunPod GPU cloud: pods, endpoints, templates, volumes and jobs on your RunPod account.",
+  "featured": false,
+  "id": "runpod",
+  "install": {
+   "kind": "npm",
+   "package": "@runpod/mcp-server",
+   "version": "4.12.0"
+  },
+  "key_badge": "paid",
+  "license": "Apache-2.0",
+  "name": "RunPod MCP",
+  "publisher": "RunPod",
+  "required_secrets": [
+   {
+    "description": "RunPod API key — note RunPod keys carry full-account access",
+    "in": "env",
+    "name": "RUNPOD_API_KEY"
+   }
+  ],
+  "risk_notes": [
+   "The API key is full-account: create-pod and create-endpoint tools spend real money by the hour, and delete tools are included. Treat spend-creating calls as payment actions."
+  ],
+  "source_url": "https://github.com/runpod/runpod-mcp",
+  "tool_count_estimate": 120,
+  "transport": "stdio",
+  "verified": false,
+  "version": "4.12.0"
+ },
+ {
+  "category": "utilities",
+  "config_template": {},
+  "description": "Mapbox maps and location: geocoding, directions, isochrones, static images and spatial analysis tools.",
+  "featured": false,
+  "id": "mapbox",
+  "install": {
+   "kind": "npm",
+   "package": "@mapbox/mcp-server",
+   "version": "0.18.0"
+  },
+  "key_badge": "freemium",
+  "license": "MIT",
+  "name": "Mapbox MCP",
+  "publisher": "Mapbox",
+  "required_secrets": [
+   {
+    "description": "Mapbox access token from your Mapbox account — a restricted public token is enough for most tools",
+    "in": "env",
+    "name": "MAPBOX_ACCESS_TOKEN"
+   }
+  ],
+  "risk_notes": [
+   "The toolset includes token-management tools that can list your account's public tokens — use a token with only the scopes the agent needs."
+  ],
+  "source_url": "https://github.com/mapbox/mcp-server",
+  "tool_count_estimate": 32,
+  "transport": "stdio",
+  "verified": false,
+  "version": "0.18.0"
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Turso Cloud databases: manage organizations, databases and groups and run SQL, through Turso's hosted MCP server (OAuth sign-in).",
+  "featured": false,
+  "id": "turso",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.turso.ai/mcp"
+  },
+  "key_badge": "freemium",
+  "license": "MIT",
+  "name": "Turso MCP",
+  "publisher": "Turso",
+  "required_secrets": [],
+  "risk_notes": [
+   "SQL execution includes writes and deletes against the databases your Turso account can reach; sign-in is OAuth, no API token is copied."
+  ],
+  "source_url": "https://github.com/tursodatabase/turso",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Appwrite backend platform — databases, auth, storage, functions and teams — through Appwrite's hosted MCP server (OAuth sign-in).",
+  "featured": false,
+  "id": "appwrite",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.appwrite.io/mcp"
+  },
+  "key_badge": "freemium",
+  "license": "MIT",
+  "name": "Appwrite MCP",
+  "publisher": "Appwrite",
+  "required_secrets": [],
+  "risk_notes": [
+   "The gateway fronts nearly the whole Appwrite API (the vendor catalogues ~981 methods); what the agent can actually do is bounded by the OAuth scopes you grant."
+  ],
+  "source_url": "https://github.com/appwrite/mcp",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "infrastructure",
+  "config_template": {},
+  "description": "Clerk authentication platform: manage applications, users, domains and instance settings through Clerk's hosted MCP server (OAuth sign-in).",
+  "featured": false,
+  "id": "clerk",
+  "install": {
+   "kind": "remote",
+   "url": "https://mcp.clerk.com/mcp"
+  },
+  "key_badge": "freemium",
+  "license": "",
+  "name": "Clerk MCP",
+  "publisher": "Clerk",
+  "required_secrets": [],
+  "risk_notes": [
+   "User-management actions follow the workspace role you sign in with; the vendor states no tool returns secret keys."
+  ],
+  "source_url": "https://clerk.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "productivity",
+  "config_template": {},
+  "description": "Statsig feature gates, experiments, dynamic configs and metrics through Statsig's hosted MCP server.",
+  "featured": false,
+  "id": "statsig",
+  "install": {
+   "kind": "remote",
+   "url": "https://api.statsig.com/v1/mcp"
+  },
+  "key_badge": "freemium",
+  "license": "",
+  "name": "Statsig MCP",
+  "publisher": "Statsig",
+  "required_secrets": [],
+  "risk_notes": [
+   "Write tools can change production feature gates and experiments — effects reach your real users."
+  ],
+  "source_url": "https://www.statsig.com",
+  "transport": "http",
+  "verified": false,
+  "version": ""
+ },
+ {
+  "category": "database",
+  "config_template": {},
+  "description": "Weaviate vector database. The MCP server is built into Weaviate itself (preview): enable it on your own instance and add a custom server pointing at https://<your-instance>/v1/mcp — there is no package to install.",
+  "featured": false,
+  "id": "weaviate",
+  "key_badge": "keyless",
+  "license": "BSD-3-Clause",
+  "name": "Weaviate MCP",
+  "publisher": "Weaviate",
+  "required_secrets": [],
+  "risk_notes": [
+   "Use a current Weaviate release (1.39.x or newer): older lines carried auth and RBAC flaws, and the built-in MCP endpoint inherits your instance's API-key/OIDC and RBAC settings."
+  ],
+  "source_url": "https://github.com/weaviate/weaviate",
+  "transport": "http",
+  "verified": false,
+  "version": ""
  }
  ],
  "registry_synced_at": "2026-11-01",
