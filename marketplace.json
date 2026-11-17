@@ -6755,8 +6755,8 @@
   "featured": false,
   "id": "infisical",
   "install": {
-   "kind": "npm",
-   "package": "@infisical/mcp",
+   "kind": "vendored",
+   "package": "infisical",
    "version": "0.1.0"
   },
   "key_badge": "freemium",
@@ -6776,8 +6776,8 @@
    }
   ],
   "risk_notes": [
-   "HIGH RISK: by default the server returns secret VALUES to the model and exposes write/delete secret tools. After installing, set INFISICAL_MASK_SECRET_VALUES=true and INFISICAL_ENABLED_TOOLS=list-projects,list-secrets,get-secret,list-folders in the server's env unless the agent genuinely needs more.",
-   "The server does not enforce permissions itself — the machine identity's project scope is the only boundary."
+   "Boom ships its own fork of this server (thirdparty/infisical, forked from @infisical/mcp@0.1.0) with secret masking ON by default: secret values come back as <masked> unless the owner deliberately sets INFISICAL_MASK_SECRET_VALUES=false in the server's env.",
+   "Write and delete secret tools are still exposed, and the server does not enforce permissions itself — the machine identity's project scope is the only boundary. INFISICAL_ENABLED_TOOLS can narrow the tool set further."
   ],
   "source_url": "https://github.com/Infisical/infisical-mcp-server",
   "tool_count_estimate": 11,
